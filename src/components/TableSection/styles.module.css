@@ -1,0 +1,6 @@
+.rowHeading {
+    color: var(--text-blue);
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}

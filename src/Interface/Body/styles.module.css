@@ -1,0 +1,23 @@
+.wrapper {
+    padding: var(--spacing-small) var(--spacing-medium);
+}
+
+.asidePage {
+    min-width: 500px;
+    width: 40%;
+}
+
+.dataVisWrapper {
+    height: 300px;
+    display: flex;
+    gap: var(--spacing-medium);
+}
+
+.applicationsWrapper {
+    flex: 1;
+    min-width: 500px;
+}
+
+.tasksWrapper {
+    width: 400px;
+}

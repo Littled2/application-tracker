@@ -1,0 +1,32 @@
+* {
+    transition: 2s;
+}
+
+:root {
+    --bg-colour: #ffffff;
+
+    --dark-grey: #f5f5f5;
+    --light-grey: #cccccc;
+    --light-grey-selected: #8f8f8f;
+    
+    --accent-colour: #ff532c;
+
+    --text-white: #131313;
+    --text-orange: #a96710;
+    --text-blue: #187da8;
+    --text-red: red;
+    --text-green: green;
+
+    --page-padding-left: 14%;
+    --page-padding-right: 14%;
+
+    --border-colour: #4e4e4e;
+
+    --spacing-small: 12px;
+    --spacing-medium: 24px;
+
+    --sans-font: Arial, 'Poppins', sans-serif;
+    --mono-font: 'Roboto Mono', monospace;
+
+    --header-height: 1.8rem;
+}

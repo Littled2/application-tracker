@@ -1,0 +1,13 @@
+.wrapper {
+    flex: 1;
+    padding: var(--spacing-small);
+    border: 1.2px solid var(--border-colour);
+    display: flex;
+    flex-direction: column;
+    /* gap: var(--spacing-small); */
+}
+
+.chart {
+    height: 100%;
+    overflow: hidden;
+}

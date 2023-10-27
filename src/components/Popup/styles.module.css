@@ -1,0 +1,42 @@
+.wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.popup {
+    width: 600px;
+    max-width: 800px;
+    max-height: 60vh;
+    max-height: 85vh;
+    background-color: var(--bg-colour);
+    border: 2px solid var(--border-colour);
+    display: flex;
+    flex-direction: column;
+}
+
+.popup .top {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px;
+    background-color: var(--border-colour);
+    color: white;
+}
+
+.popup .top button {
+    background-color: var(--dark-grey);
+    display: inline-flex;
+    align-items: center;
+    color: var(--text-white);
+}
+.popup .content {
+    padding: 8px;
+    overflow-y: auto;
+}

@@ -1,0 +1,10 @@
+.org {
+    max-width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dln {
+    white-space: nowrap;
+}

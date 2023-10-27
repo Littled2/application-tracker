@@ -1,0 +1,43 @@
+.window {
+    height: 100%;
+    border: 2px solid var(--border-colour);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-small);
+}
+
+.topBar {
+    display: flex;
+    justify-content: right;
+    background-color: var(--border-colour);
+    padding: 4px;
+}
+
+.topBar > button {
+    color: var(--text-white);
+    font-weight: 600;
+    background-color: transparent;
+}
+
+.inner {
+    padding: 8px;
+}
+
+.newTask {
+    color: var(--text-white);
+    font-weight: 600;
+    background-color: var(--dark-grey);
+}
+
+.popup .top {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px;
+    background-color: var(--border-colour);
+    color: white;
+}
+
+.popup .content {
+    padding: 8px;
+    overflow-y: auto;
+}

@@ -1,0 +1,110 @@
+:root {
+    --bg-colour: #000000;
+
+    --dark-grey: #232323;
+    --light-grey: #606060;
+    --light-grey-selected: #c4c4c4;
+    
+    --accent-colour: #ff532c;
+
+    --text-white: #d6d6d6;
+    --text-orange: #d28827;
+    --text-blue: #187da8;
+    --text-red: red;
+    --text-green: green;
+
+    --page-padding-left: 14%;
+    --page-padding-right: 14%;
+
+    --border-colour: #242424;
+
+    --spacing-small: 12px;
+    --spacing-medium: 24px;
+
+    --sans-font: Arial, 'Poppins', sans-serif;
+    --mono-font: 'Roboto Mono', monospace;
+
+    --header-height: 1.8rem;
+
+}
+
+body {
+    height: 100vh;
+}
+
+header {
+    height: var(--header-height);
+    padding: 2px var(--spacing-small);
+    background-color: var(--dark-grey);
+}
+
+header button {
+    background-color: var(--dark-grey);
+    color: var(--text-white);
+    display: inline-flex;
+    align-items: center;
+}
+
+main {
+    height: calc(100vh - var(--header-height));
+}
+
+table {
+    width: 100%;
+    border-spacing: 0;
+}
+
+table th {
+    background-color: var(--dark-grey);
+    text-align: left;
+    color: var(--text-white);
+}
+
+
+
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0000; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: #262626; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #1c1c1c; 
+}
+
+
+
+
+
+
+
+
+
+/* Form Styles */
+
+.form input,
+.form select,
+.form textarea {
+    background-color: rgb(239, 239, 239);
+    font-size: 1rem;
+    font-family: inherit;
+    padding: 4px;
+    border: none;
+}
+
+.form input[type=text] {
+    width: 400px;
+}
+
+.form textarea {
+    resize: vertical;
+    min-height: 6rem;
+    width: 100%;
+}

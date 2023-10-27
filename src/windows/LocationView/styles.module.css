@@ -1,0 +1,37 @@
+.wrapper {
+    flex: 1;
+    display: flex;
+    gap: var(--spacing-small);
+    padding: var(--spacing-small);
+    border: 1.2px solid var(--border-colour);
+}
+
+.imageWrapper {
+    position: relative;
+    height: 100%;
+    width: fit-content;
+}
+
+.image {
+    max-height: 100%;
+    /* margin: auto; */
+}
+
+.dotsWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.dot {
+    position: absolute;
+    background-color: var(--text-orange);
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+
+    top: 10px;
+    left: 10px;
+}

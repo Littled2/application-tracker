@@ -1,0 +1,18 @@
+.tab {
+    padding: 2px 8px;
+    background-color: var(--light-grey);
+    clip-path: polygon(0 0, calc(100% - 6px) 0%, 100% 100%, 0% 100%);
+    color: var(--text-white);
+    border: none;
+}
+
+.tabs {
+    border-bottom: 1.4px solid var(--dark-grey);
+    display: flex;
+    gap: 2px;
+}
+
+.tab.selected {
+    background-color: var(--light-grey-selected);
+    color: black;
+}
