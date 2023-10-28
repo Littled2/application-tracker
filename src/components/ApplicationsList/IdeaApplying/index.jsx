@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import styles from "./styles.module.css"
 import { TableRows } from "../TableRows"
 import { TableSection } from "../../TableSection"
+import { DOMAIN } from "../../../globals"
 
 export function IdeasApplying({ counter, setOpenAppID }) {
 
@@ -11,7 +12,7 @@ export function IdeasApplying({ counter, setOpenAppID }) {
     const [ err, setErr ] = useState(false)
 
     useEffect(() => {
-        fetch("http://localhost:4000/get-pre-applications")
+        fetch(DOMAIN + "/get-pre-applications")
         .then(res => res.json())
         .then(apps => {
             setIdeas(apps.filter(app => app.stage === "idea"))

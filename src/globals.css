@@ -30,6 +30,7 @@
 
 body {
     height: 100vh;
+    overflow-x: scroll;
 }
 
 header {

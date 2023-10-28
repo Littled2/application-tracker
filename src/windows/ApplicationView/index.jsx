@@ -5,6 +5,8 @@ import { NewTask } from "../../components/forms/NewTask"
 import { LiaEdit } from "react-icons/lia"
 import { EditApp } from "../../components/forms/EditApp"
 import { AppTasksList } from "../../components/TasksList/AppTasksList"
+import { DOMAIN } from "../../globals"
+import { AiOutlineClose } from "react-icons/ai"
 
 export function ApplicationView({ openAppID, setOpenAppID }) {
 
@@ -23,7 +25,7 @@ export function ApplicationView({ openAppID, setOpenAppID }) {
     }, [ openAppID ])
 
     function fetchApp() {
-        fetch("http://localhost:4000/get-application?id=" + openAppID)
+        fetch(DOMAIN + "/get-application?id=" + openAppID)
         .then(res => res.json())
         .then(appData => {
             setApplication(appData)
@@ -38,7 +40,9 @@ export function ApplicationView({ openAppID, setOpenAppID }) {
     return (
         <section className={styles.window}>
             <div className={styles.topBar}>
-                <button onClick={() => setOpenAppID(null)}>X</button>
+                <button className={styles.close} onClick={() => setOpenAppID(null)}>
+                    <AiOutlineClose />
+                </button>
             </div>
 
             <div className={styles.inner}>

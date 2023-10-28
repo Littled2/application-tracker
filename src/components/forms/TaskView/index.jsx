@@ -1,4 +1,5 @@
 import { useRef } from "react"
+import { DOMAIN } from "../../../globals"
 
 export function TaskView({ task, setTrigger }) {
 
@@ -9,7 +10,7 @@ export function TaskView({ task, setTrigger }) {
     function submit(e) {
         e.preventDefault()
 
-        fetch("http://localhost:4000/set-task", {
+        fetch(DOMAIN + "/set-task", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',

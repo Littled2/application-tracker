@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import styles from "./styles.module.css"
 import ukImage from "./UK.png"
+import { DOMAIN } from "../../globals";
 
 
 const image_locations = {
@@ -58,12 +59,23 @@ export function LocationView() {
 
     const [ locations, setLocations ] = useState([])
 
+
+    const [ hover, setHover ] = useState(null)
+
     useEffect(() => {
-        fetch("http://localhost:4000/get-locations")
+        fetch(DOMAIN + "/get-locations")
         .then(res => res.json())
         .then(locations => setLocations(locations))
         .catch(error => console.error("Error getting locations", error))
     }, [])
+
+    function mouseOver(loc) {
+        setHover(loc)
+    }
+
+    function mouseAway(loc) {
+        setHover(null)
+    }
 
     return (
         <div className={styles.wrapper}>
@@ -74,8 +86,8 @@ export function LocationView() {
                         {
                             Object.keys(locations).map((l,i) => {
                                 return (
-                                    <tr key={i}>
-                                        <th>{capitalizeFirstLetter(l)}</th>
+                                    <tr onMouseEnter={() => mouseOver(l)} onMouseLeave={() => mouseAway(l)} key={l + i}>
+                                        <th className={hover !== null ? ((hover === l) ? 'text-orange' : 'text-white') : 'text-white'}>{capitalizeFirstLetter(l)}</th>
                                         <td>{locations[l]}</td>
                                     </tr>
                                 )
@@ -87,12 +99,14 @@ export function LocationView() {
             <div className={styles.imageWrapper}>
                 <div className={styles.dotsWrapper}>
                     {
-                        Object.keys(locations).map(loc => {
+                        Object.keys(locations).map((loc, i) => {
+
+                            if(hover !== null && hover !== loc) return
                             
                             let sizePX = (locations[loc] * 2) + 2
 
                             return loc in image_locations ? (
-                                <div key={loc} className={styles.dot} style={{
+                                <div key={i} className={styles.dot} style={{
                                     width: `${sizePX}px`,
                                     height: `${sizePX}px`,
                                     left: `${image_locations[loc][0]}%`,

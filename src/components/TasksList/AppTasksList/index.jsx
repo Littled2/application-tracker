@@ -3,6 +3,7 @@ import { TableSection } from "../../TableSection"
 import { TableRows } from "../../ApplicationsList/TableRows"
 import { Popup } from "../../Popup"
 import { TaskView } from "../../forms/TaskView"
+import { DOMAIN } from "../../../globals"
 
 export function AppTasksList({ appID }) {
 
@@ -13,7 +14,7 @@ export function AppTasksList({ appID }) {
     const [ completeTasks, setCompleteTasks ] = useState([])
 
     useEffect(() => {
-        fetch("http://localhost:4000/get-app-tasks?appID=" + appID)
+        fetch(DOMAIN + "/get-app-tasks?appID=" + appID)
         .then(res => res.json())
         .then(tasksData => {
             console.log("tasks data", tasksData)

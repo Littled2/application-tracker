@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Bar } from "react-chartjs-2"
+import { DOMAIN } from "../../../globals"
 
 export function AppsDeadlinesChart() {
 
@@ -11,7 +12,7 @@ export function AppsDeadlinesChart() {
         let a = new Date()
         const days = []
         
-        for (let i = 0; i < 14; i++) {
+        for (let i = 0; i < 40; i++) {
             let b = new Date()
             b.setDate(a.getDate() + i)
             days.push(b.toISOString().slice(0, 10))
@@ -23,7 +24,7 @@ export function AppsDeadlinesChart() {
             days_map[day] = [0, 0, 0]
         })
 
-        fetch("http://localhost:4000/get-all-apps-deadline")
+        fetch(DOMAIN + "/get-all-apps-deadline")
         .then(res => res.json())
         .then(tasksData => {
             tasksData.forEach(app => {

@@ -2,6 +2,7 @@ import styles from "./styles.module.css"
 
 import { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
+import { DOMAIN } from "../../globals";
 
 export function StageBreakdown() {
 
@@ -9,7 +10,7 @@ export function StageBreakdown() {
     const [ err, setErr ] = useState(false)
 
     useEffect(() => {
-        fetch("http://localhost:4000/get-totals")
+        fetch(DOMAIN + "/get-totals")
         .then(res => res.json())
         .then(breakdown => {
             setAmounts([ breakdown.idea, breakdown.applying, breakdown.applied ])

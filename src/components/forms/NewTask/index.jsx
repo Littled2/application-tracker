@@ -1,4 +1,5 @@
 import { useRef } from "react"
+import { DOMAIN } from "../../../globals"
 
 export function NewTask({ appID, fetchApp, setTrigger }) {
 
@@ -14,7 +15,7 @@ export function NewTask({ appID, fetchApp, setTrigger }) {
             deadline: deadlineRef.current.value
         }
 
-        fetch("http://localhost:4000/new-task", {
+        fetch(DOMAIN + "/new-task", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',

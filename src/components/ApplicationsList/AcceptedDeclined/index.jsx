@@ -3,6 +3,7 @@ import { TableRows } from "../TableRows"
 import styles from "./styles.module.css"
 import { useEffect } from "react"
 import { TableSection } from "../../TableSection"
+import { DOMAIN } from "../../../globals"
 
 
 export function AcceptedDeclined({ counter, setOpenAppID }) {
@@ -13,7 +14,7 @@ export function AcceptedDeclined({ counter, setOpenAppID }) {
     const [ err, setErr ] = useState(false)
 
     useEffect(() => {
-        fetch("http://localhost:4000/get-post-applications")
+        fetch(DOMAIN + "/get-post-applications")
         .then(res => res.json())
         .then(apps => {
             setAccepted(apps.filter(app => app.stage === "accepted"))

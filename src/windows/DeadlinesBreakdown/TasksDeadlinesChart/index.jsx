@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Bar } from "react-chartjs-2"
+import { DOMAIN } from "../../../globals"
 
 export function TasksDeadlinesChart() {
 
@@ -22,7 +23,7 @@ export function TasksDeadlinesChart() {
             days_map[day] = [0, 0]
         })
 
-        fetch("http://localhost:4000/get-tasks")
+        fetch(DOMAIN + "/get-tasks")
         .then(res => res.json())
         .then(tasksData => {
             tasksData.forEach(task => {

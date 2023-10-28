@@ -11,6 +11,7 @@
     justify-content: right;
     background-color: var(--border-colour);
     padding: 4px;
+    align-items: center;
 }
 
 .topBar > button {
@@ -40,4 +41,12 @@
 .popup .content {
     padding: 8px;
     overflow-y: auto;
+}
+
+.close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+    aspect-ratio: 1;
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { DOMAIN } from "../../../globals"
 
 export function SelectOrganisation({ required, selected, setSelected }) {
 
@@ -8,7 +9,7 @@ export function SelectOrganisation({ required, selected, setSelected }) {
     const [ loading, setLoading ] = useState(true)
 
     useEffect(() => {
-        fetch("http://localhost:4000/get-organisations")
+        fetch(DOMAIN + "/get-organisations")
         .then(res => res.json())
         .then(orgsData => {
             setLoading(false)

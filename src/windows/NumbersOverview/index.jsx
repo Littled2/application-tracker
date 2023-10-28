@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import styles from "./styles.module.css"
+import { DOMAIN } from "../../globals"
 
 export function NumbersOverview() {
 
@@ -7,7 +8,7 @@ export function NumbersOverview() {
     const [ err, setErr ] = useState(false)
 
     useEffect(() => {
-        fetch("http://localhost:4000/get-totals")
+        fetch(DOMAIN + "/get-totals")
         .then(res => res.json())
         .then(breakdownData => {
             setBreakdown(breakdownData)

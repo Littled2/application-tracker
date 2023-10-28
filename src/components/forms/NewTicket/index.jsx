@@ -1,4 +1,5 @@
 import { useRef } from "react"
+import { DOMAIN } from "../../../globals"
 
 export function NewTicket({ setTrigger }) {
 
@@ -7,7 +8,7 @@ export function NewTicket({ setTrigger }) {
     function submit(e) {
         e.preventDefault()
 
-        fetch("http://localhost:4000/new-ticket", {
+        fetch(DOMAIN + "/new-ticket", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',

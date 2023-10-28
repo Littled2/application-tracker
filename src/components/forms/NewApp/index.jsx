@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { SelectOrganisation } from "../../inputs/SelectOrganisation";
+import { DOMAIN } from "../../../globals";
 
 export function NewApp({ setTrigger, setCounter, counter }) {
 
@@ -19,7 +20,7 @@ export function NewApp({ setTrigger, setCounter, counter }) {
     function submit(e) {
         e.preventDefault()
         
-        fetch("http://localhost:4000/new-app",
+        fetch(DOMAIN + "/new-app",
         {
             method: "POST",
             headers: {

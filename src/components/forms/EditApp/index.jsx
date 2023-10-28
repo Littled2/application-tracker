@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { SelectOrganisation } from "../../inputs/SelectOrganisation";
+import { DOMAIN } from "../../../globals";
 
 export function EditApp({ app, setTrigger, fetchApp }) {
 
@@ -18,7 +19,7 @@ export function EditApp({ app, setTrigger, fetchApp }) {
 
         e.preventDefault()
         
-        fetch("http://localhost:4000/set-app?appID=" + app.id,
+        fetch(DOMAIN + "/set-app?appID=" + app.id,
         {
             method: "POST",
             headers: {
