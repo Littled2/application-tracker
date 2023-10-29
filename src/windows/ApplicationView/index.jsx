@@ -16,9 +16,9 @@ export function ApplicationView({ openAppID, setOpenAppID }) {
     const [ newTaskOpen, setNewTaskOpen ] = useState()
     const [ editAppOpen, setEditAppOpen ] = useState()
 
-    useEffect(() => {
+    const [ counter, setCounter ] = useState(0)
 
-        if(newTaskOpen) return
+    useEffect(() => {
 
         fetchApp()
 
@@ -101,13 +101,13 @@ export function ApplicationView({ openAppID, setOpenAppID }) {
                                 </div>
                                 <div className="flex col gap-s">
                                     
-                                    <AppTasksList appID={application.id} />
+                                    <AppTasksList counter={counter} setCounter={setCounter} appID={application.id} />
 
                                     <div>
                                         <button className={styles.newTask} onClick={() => setNewTaskOpen(true)}>Add Task +</button>
 
                                         <Popup title={"Create Task"} trigger={newTaskOpen} setTrigger={setNewTaskOpen}>
-                                            <NewTask appID={application.id} fetchApp={fetchApp} setTrigger={setNewTaskOpen} />
+                                            <NewTask appID={application.id} counter={counter} setCounter={setCounter} setTrigger={setNewTaskOpen} />
                                         </Popup>
                                     </div>
                                 </div>

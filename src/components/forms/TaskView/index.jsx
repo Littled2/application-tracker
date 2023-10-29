@@ -1,7 +1,7 @@
 import { useRef } from "react"
 import { DOMAIN } from "../../../globals"
 
-export function TaskView({ task, setTrigger }) {
+export function TaskView({ task, counter, setCounter, setTrigger }) {
 
     const taskRef = useRef()
     const deadlineRef = useRef()
@@ -28,6 +28,7 @@ export function TaskView({ task, setTrigger }) {
         .then(res => {
             console.log(res)
             setTrigger(false)
+            setCounter(1 + counter)
         })
         .catch(err => {
             console.error("Error setting task", err)

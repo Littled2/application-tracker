@@ -5,7 +5,7 @@ import { Popup } from "../../Popup"
 import { TaskView } from "../../forms/TaskView"
 import { DOMAIN } from "../../../globals"
 
-export function AppTasksList({ appID }) {
+export function AppTasksList({ appID, counter, setCounter }) {
 
     const [ popupOpen, setPopupOpen ] = useState(false)
     const [ selectedTask, setSelectedTask ] = useState(null)
@@ -21,7 +21,7 @@ export function AppTasksList({ appID }) {
             setTodoTasks(tasksData.filter(task => task.complete === false))
             setCompleteTasks(tasksData.filter(task => task.complete === true))
         })
-    }, [appID, popupOpen])
+    }, [appID, counter ])
 
     return (
         <>
@@ -86,7 +86,7 @@ export function AppTasksList({ appID }) {
             <Popup title="Task View" trigger={popupOpen} setTrigger={setPopupOpen}>
                 {
                     selectedTask !== null ? (
-                        <TaskView task={selectedTask} setTrigger={setPopupOpen} />
+                        <TaskView task={selectedTask} setTrigger={setPopupOpen} counter={counter} setCounter={setCounter} />
                     ) : (
                         <></>
                     )

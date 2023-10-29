@@ -1,7 +1,7 @@
 import { useRef } from "react"
 import { DOMAIN } from "../../../globals"
 
-export function NewTask({ appID, fetchApp, setTrigger }) {
+export function NewTask({ appID, counter, setCounter, setTrigger }) {
 
     const taskRef = useRef()
     const deadlineRef = useRef()
@@ -25,7 +25,7 @@ export function NewTask({ appID, fetchApp, setTrigger }) {
         })
         .then(res => {
             console.log(res)
-            fetchApp()
+            setCounter(counter + 1)
             setTrigger(false)
         })
         .catch(err => {
