@@ -31,7 +31,7 @@ export function Body({ counter }) {
 
                 </div>
 
-                <div className="flex gap-m">
+                <div className={styles.tablesWrapper}>
                     <div className={styles.applicationsWrapper} style={{ height: "calc(100vh - 300px)" }}>
                         <Tabs tabs={[
                             {

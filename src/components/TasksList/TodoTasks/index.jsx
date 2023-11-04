@@ -24,6 +24,7 @@ export function TodoTasks({ setOpenAppID }) {
                     <tr>
                         <th>Task</th>
                         <th>Deadline</th>
+                        <th style={{width:"1.5rem"}} className="text-center">T</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,6 +45,7 @@ export function TodoTasks({ setOpenAppID }) {
                                         <td
                                             className={diff > 0 ? styles.late : ''}
                                         >{task?.deadline}</td>
+                                        <td className="text-center">{task?.app?.type === "placement" ? "P" : "I"}</td>
                                     </tr>
                                 )
                             })

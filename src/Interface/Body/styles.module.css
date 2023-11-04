@@ -21,3 +21,21 @@
 .tasksWrapper {
     width: 400px;
 }
+
+.tablesWrapper {
+    display: flex;
+    gap: var(--spacing-medium);
+}
+
+
+@media screen and (max-width: 800px) {
+    .dataVisWrapper {
+        display: none;
+    }
+    .tablesWrapper {
+        flex-direction: column;
+    }
+    .tasksWrapper {
+        width: 100%;
+    }
+}
