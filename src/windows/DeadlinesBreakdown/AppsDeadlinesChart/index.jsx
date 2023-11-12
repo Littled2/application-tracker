@@ -88,9 +88,9 @@ export function AppsDeadlinesChart() {
     }
     
     return chartData !== null ? (
-        <div>
-            <b><small>App Deadlines (Nxt 14d)</small></b>
-            <div style={{maxHeight:"100%"}}>
+        <div style={{display:"flex", flexDirection:"column", justifyContent:"space-between"}}>
+            <b style={{height: "1.2rem"}}><small>App Deadlines (Nxt 14d)</small></b>
+            <div style={{height:"calc(100% - 1.2rem)"}}>
                 <Bar options={options} data={chartData} />
             </div>
         </div>

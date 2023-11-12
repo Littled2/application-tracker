@@ -48,6 +48,22 @@ const image_locations = {
     "cambridge": [
         "81.54",
         "74.5"
+    ],
+    "reading": [
+        "69.54",
+        "83.5"
+    ],
+    "sheffield": [
+        "64.54",
+        "63"
+    ],
+    "southampton": [
+        "66.9",
+        "87.6"
+    ],
+    "yeovil": [
+        "55.2",
+        "87"
     ]
 }
 
