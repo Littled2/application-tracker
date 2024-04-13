@@ -27,7 +27,13 @@ export function Body({ counter }) {
 
                     {/* <NumbersOverview /> */}
 
-                    <DeadlinesBreakdown />
+                    {
+                        openAppID === null ? (
+                            <DeadlinesBreakdown />
+                        ) : (
+                            <></>
+                        )
+                    }
 
                 </div>
 

@@ -7,6 +7,7 @@ import { EditApp } from "../../components/forms/EditApp"
 import { AppTasksList } from "../../components/TasksList/AppTasksList"
 import { DOMAIN } from "../../globals"
 import { AiOutlineClose } from "react-icons/ai"
+import { LinkView } from "./LinkView"
 
 export function ApplicationView({ openAppID, setOpenAppID }) {
 
@@ -88,6 +89,16 @@ export function ApplicationView({ openAppID, setOpenAppID }) {
                                     </tbody>
                                 </table>
                             </div>
+
+                            {/* <div className="flex gap-s">
+                                {
+                                    linkText !== "" ? (
+                                        <LinkView linkText={"Hello"} link={"df"} />
+                                    ) : (
+                                        <></>
+                                    )
+                                }
+                            </div> */}
         
                             <div>
                                 <p className="text-white">Info</p>
