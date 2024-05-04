@@ -10,12 +10,18 @@ import { Applied } from "../../components/ApplicationsList/Applied"
 import { IdeasApplying } from "../../components/ApplicationsList/IdeaApplying"
 import { TodoTasks } from "../../components/TasksList/TodoTasks"
 import { DeadlinesBreakdown } from "../../windows/DeadlinesBreakdown"
+import { usePocket } from "../../contexts/pocketContext"
+import { Login } from "../../components/forms/Login"
+import { ApplicationsTabs } from "../../windows/ApplicationsTabs"
+import { OpportunitiesTracker } from "../../components/OppourtunitiesTracker"
 
-export function Body({ counter }) {
+export function Body({ counter, setCounter }) {
+
+    const { user } = usePocket()
 
     const [ openAppID, setOpenAppID ] = useState(null)
 
-    return (
+    return user ? (
         <main className={[ "flex gap-m", styles.wrapper ].join(' ')}>
 
             <div className="flex col gap-m flex-1">
@@ -25,34 +31,27 @@ export function Body({ counter }) {
 
                     <StageBreakdown />
 
-                    {/* <NumbersOverview /> */}
-
                     {
                         openAppID === null ? (
-                            <DeadlinesBreakdown />
+                            <NumbersOverview />
                         ) : (
                             <></>
                         )
                     }
 
+                    {/* {
+                        openAppID === null ? (
+                            <DeadlinesBreakdown />
+                        ) : (
+                            <></>
+                        )
+                    } */}
+
                 </div>
 
                 <div className={styles.tablesWrapper}>
                     <div className={styles.applicationsWrapper} style={{ height: "calc(100vh - 300px)" }}>
-                        <Tabs tabs={[
-                            {
-                                name: "Idea / Applying",
-                                tab: <IdeasApplying counter={counter} setOpenAppID={setOpenAppID} />
-                            },
-                            {
-                                name: "Applied",
-                                tab: <Applied counter={counter} setOpenAppID={setOpenAppID} />
-                            },
-                            {
-                                name: "Accepted / Declined",
-                                tab: <AcceptedDeclined counter={counter} setOpenAppID={setOpenAppID} />
-                            }
-                        ]} />
+                        <ApplicationsTabs counter={counter} setOpenAppID={setOpenAppID}  />
                     </div>
 
                     {
@@ -67,18 +66,32 @@ export function Body({ counter }) {
                     }
                 </div>
 
+                {/* <div>
+                    <div className={styles.opportunityWrapper}>
+
+                    </div>
+                    <h5>Opportunities Tracker</h5>
+                    <div className={styles.applicationsWrapper} style={{ height: "calc(100vh - 300px)" }}>
+                        <OpportunitiesTracker />
+                    </div>
+                </div> */}
+
             </div>
 
             {
                 openAppID !== null ? (
                     <div className={styles.asidePage}>
-                        <ApplicationView openAppID={openAppID} setOpenAppID={setOpenAppID} />
+                        <ApplicationView counter={counter} setCounter={setCounter} openAppID={openAppID} setOpenAppID={setOpenAppID} />
                     </div>
                 ) : (
                     <></>
                 )
             }
 
+        </main>
+    ) : (
+        <main className={styles.loginWrapper}>
+            <Login />
         </main>
     )
 }

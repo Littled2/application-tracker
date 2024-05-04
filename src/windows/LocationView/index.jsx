@@ -2,70 +2,10 @@ import { useEffect, useState } from "react"
 import styles from "./styles.module.css"
 import ukImage from "./UK.png"
 import { DOMAIN } from "../../globals";
+import { usePocket } from "../../contexts/pocketContext";
+import { useActiveYear } from "../../contexts/activeYearContext";
 
 
-const image_locations = {
-    "london": [
-        "76.39",
-        "82.39"
-    ],
-    "bristol": [
-        "55.90",
-        "82.23"
-    ],
-    "exeter": [
-        "46.02",
-        "89.37"
-    ],
-    "cardiff": [
-        "49.16",
-        "81.56"
-    ],
-    "belfast": [
-        "25.54",
-        "50.66"
-    ],
-    "edinburgh": [
-        "47.6",
-        "35.8"
-    ],
-    "bournemouth": [
-        "60.9",
-        "88.6"
-    ],
-    "glasgow": [
-        "38.6",
-        "35.8"
-    ],
-    "manchester": [
-        "56.54",
-        "62"
-    ],
-    "nottingham": [
-        "66.54",
-        "68"
-    ],
-    "cambridge": [
-        "81.54",
-        "74.5"
-    ],
-    "reading": [
-        "69.54",
-        "83.5"
-    ],
-    "sheffield": [
-        "64.54",
-        "63"
-    ],
-    "southampton": [
-        "66.9",
-        "87.6"
-    ],
-    "yeovil": [
-        "55.2",
-        "87"
-    ]
-}
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -75,15 +15,44 @@ export function LocationView() {
 
     const [ locations, setLocations ] = useState([])
 
+    const { pb } = usePocket()
+    const { activeYear } = useActiveYear()
 
     const [ hover, setHover ] = useState(null)
 
+    const [ appLocations, setAppLocations ] = useState([])
+
     useEffect(() => {
-        fetch(DOMAIN + "/get-locations")
-        .then(res => res.json())
-        .then(locations => setLocations(locations))
+        
+        pb.collection("locationsOfApplications").getFullList({ expand: "locations", filter: `year = "${activeYear}"` })
+        .then(items => {
+
+            let map = {}
+
+            items.forEach(item => {
+
+                if(!("expand" in item)) {
+                    return
+                }
+
+                item.expand.locations.forEach(loc => {
+                    if(loc.id in map) {
+                        map[loc.id].freq += 1
+                    } else {
+                        map[loc.id] = {
+                            ...loc,
+                            freq: 1
+                        }
+                    }
+                })
+            })
+
+            setAppLocations(map)
+        })
         .catch(error => console.error("Error getting locations", error))
-    }, [])
+
+    }, [ activeYear ])
+
 
     function mouseOver(loc) {
         setHover(loc)
@@ -100,11 +69,11 @@ export function LocationView() {
                 <table style={{ fontSize: "0.8rem" }}>
                     <tbody>
                         {
-                            Object.keys(locations).map((l,i) => {
+                            Object.keys(appLocations).map((locID, i) => {
                                 return (
-                                    <tr onMouseEnter={() => mouseOver(l)} onMouseLeave={() => mouseAway(l)} key={l + i}>
-                                        <th className={hover !== null ? ((hover === l) ? 'text-orange' : 'text-white') : 'text-white'}>{capitalizeFirstLetter(l)}</th>
-                                        <td>{locations[l]}</td>
+                                    <tr onMouseEnter={() => mouseOver(locID)} onMouseLeave={() => mouseAway(locID)} key={locID + i}>
+                                        <th className={hover !== null ? ((hover === locID) ? 'text-orange' : 'text-white') : 'text-white'}>{appLocations[locID].freq}</th>
+                                        <td>{appLocations[locID].name}</td>
                                     </tr>
                                 )
                             })
@@ -115,22 +84,22 @@ export function LocationView() {
             <div className={styles.imageWrapper}>
                 <div className={styles.dotsWrapper}>
                     {
-                        Object.keys(locations).map((loc, i) => {
+                        Object.keys(appLocations).map((locID, i) => {
 
-                            if(hover !== null && hover !== loc) return
+                            const loc = appLocations[locID]
+
+                            if(hover !== null && hover !== locID) return
                             
-                            let sizePX = (locations[loc] * 2) + 2
+                            let sizePX = (loc.freq * 2) + 2
 
-                            return loc in image_locations ? (
+                            return (
                                 <div key={i} className={styles.dot} style={{
                                     width: `${sizePX}px`,
                                     height: `${sizePX}px`,
-                                    left: `${image_locations[loc][0]}%`,
-                                    top: `${image_locations[loc][1]}%`,
+                                    left: `${loc.distX}%`,
+                                    top: `${loc.distY}%`,
                                     transform: `translateY(calc(-${sizePX}px / 2)) translateX(calc(-${sizePX}px / 2))`
                                 }}></div>
-                            ) : (
-                                <></>
                             )
                         })
                     }

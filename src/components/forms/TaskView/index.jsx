@@ -1,5 +1,7 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { DOMAIN } from "../../../globals"
+import { usePocket } from "../../../contexts/pocketContext"
+import { DateInput } from "../../inputs/DateInput"
 
 export function TaskView({ task, counter, setCounter, setTrigger }) {
 
@@ -7,32 +9,30 @@ export function TaskView({ task, counter, setCounter, setTrigger }) {
     const deadlineRef = useRef()
     const completeRef = useRef()
 
+    const [ info, setInfo ] = useState(task.info)
+    const [ deadline, setDeadline ] = useState(new Date(task.deadline))
+    const [ complete, setComplete ] = useState(task.complete)
+
+    const { pb } = usePocket()
+
     function submit(e) {
         e.preventDefault()
 
-        fetch(DOMAIN + "/set-task", {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                taskID: task.taskID,
-                appID: task.appID,
-                info: taskRef.current.value,
-                deadline: deadlineRef.current.value,
-                complete: completeRef.current.checked,
-            })
+        pb.collection("tasks").update(task.id, {
+            "info": info,
+            "deadline": deadline,
+            "complete": true,
+            "application": task.application
         })
-        .then(res => res.text())
         .then(res => {
             console.log(res)
             setTrigger(false)
-            setCounter(1 + counter)
+            setCounter(c => c + 1)
         })
         .catch(err => {
-            console.error("Error setting task", err)
+            console.error("Error updating task", err)
         })
+
     }
 
     return (
@@ -41,18 +41,18 @@ export function TaskView({ task, counter, setCounter, setTrigger }) {
                 <div>
                     <label>Task</label>
                 </div>
-                <input type="text" ref={taskRef} defaultValue={task.info} />
+                <input type="text" value={info} onChange={e => setInfo(e.target.value)} />
             </div>
             <div>
                 <div>
                     <label>Deadline</label>
                 </div>
-                <input type="date" ref={deadlineRef} defaultValue={task.deadline} />
+                <DateInput date={deadline} setDate={setDeadline} />
             </div>
             <div>
                 <div>
                     <label className="flex align-center">
-                        <input ref={completeRef} defaultChecked={task.complete} type="checkbox"/>
+                        <input checked={complete} onChange={e => setComplete(e.target.checked)} type="checkbox"/>
                         <span>Complete</span>
                     </label>
                 </div>

@@ -1,63 +1,39 @@
 import { useEffect, useState } from "react"
-import { DOMAIN } from "../../../globals"
+import { usePocket } from "../../../contexts/pocketContext"
 
-export function SelectOrganisation({ required, selected, setSelected }) {
+export function SelectOrganisation({ required, selected, setSelected, c }) {
 
-    const [ orgs, setOrgs ] = useState([])
-    const [ custom, setCustom ] = useState('')
-    const [ selectedOrg, setSelectedOrg ] = useState(selected)
+    const [ organisations, setOrganisations ] = useState([])
     const [ loading, setLoading ] = useState(true)
 
+    const { pb } = usePocket()
+
     useEffect(() => {
-        fetch(DOMAIN + "/get-organisations")
-        .then(res => res.json())
-        .then(orgsData => {
-            setLoading(false)
-            setOrgs(orgsData)
-            if(selected in orgsData) {
-                setSelectedOrg(selected)
-            }
+
+        pb.collection("organisations").getFullList({
+            sort:"name"
         })
-    }, [])
+        .then(orgs => {
+            setLoading(false)
+            setOrganisations(orgs)
+        })
+        .catch(err => console.error("Error getting organisations", err))
 
-    useEffect(() => {
-        if(selectedOrg === "other") {
-            setSelected(custom)
-        } else {
-            setSelected(selectedOrg)
-        }
-    }, [custom, selectedOrg])
+    }, [c])
 
-    function setOrg(e) {
-        console.log(e.target.value)
-        setSelectedOrg(e.target.value)
-    }
 
     return !loading ? (
-        <div className="flex col gap-s">
-            <select required={required} onInput={e => setOrg(e)}>
-                <option>Please Select</option>
-                {
-                    Object.keys(orgs).map(orgID => {
-                        return <option value={orgID} key={orgID}>{orgs[orgID]?.name}</option>
-                    })
-                }
-                <option value="other">Other - Please enter</option>
-            </select>
-
-            {
-                selectedOrg === "other" ? (
-                    <div>
-                        <div>
-                            <label>Organisation Name</label>
-                        </div>
-                        <input type="text" value={custom} onInput={e => setCustom(e.target.value)} />
-                    </div>
-                ) : (
-                    <></>
-                )
-            }
-        </div>
+        <>
+            <div className="flex col gap-s">
+                <select value={selected} required={required} onInput={e => setSelected(e.target.value)}>
+                    {
+                        organisations.map(org => {
+                            return <option value={org.id} key={org.id}>{org?.name}</option>
+                        })
+                    }
+                </select>
+            </div>
+        </>
     ) : (
         <></>
     )

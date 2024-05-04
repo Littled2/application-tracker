@@ -2,4 +2,5 @@
     flex: 1;
     padding: var(--spacing-small);
     border: 1.2px solid var(--border-colour);
+    width: 200px;
 }

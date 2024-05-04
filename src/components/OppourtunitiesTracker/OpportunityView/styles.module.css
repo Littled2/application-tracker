@@ -1,0 +1,29 @@
+.wrapper {
+    border: 2px solid var(--dark-grey);
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--dark-grey);
+    padding: 2px;
+}
+
+.top > button {
+    background-color: transparent;
+    color: white;
+    font-size: 24em;
+    width: 1.75rem;
+    height: 1.75rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inner {
+    padding: 0.74rem;
+}
+
+.inner > h3 {
+    color: white;
+}

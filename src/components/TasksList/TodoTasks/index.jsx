@@ -2,19 +2,34 @@ import { useEffect, useState } from "react"
 import { TableSection } from "../../TableSection"
 import { DOMAIN } from "../../../globals"
 import styles from "./styles.module.css"
+import { usePocket } from "../../../contexts/pocketContext"
+import { getDate } from "../../../helpers/dates"
 
 export function TodoTasks({ setOpenAppID }) {
 
     const [ todoTasks, setTodoTasks ] = useState([])
     const [ completeTasks, setCompleteTasks ] = useState([])
 
+    const { pb } = usePocket()
+
     useEffect(() => {
-        fetch(DOMAIN + "/get-tasks")
-        .then(res => res.json())
-        .then(tasksData => {
-            setTodoTasks(tasksData.filter(task => task.complete === false))
-            setCompleteTasks(tasksData.filter(task => task.complete === true))
+
+        pb.collection("tasks").getFullList({ sort: "deadline", filter: "complete = false" })
+        .then(tasks => {
+            setTodoTasks(tasks)
         })
+        .catch(err => {
+            console.error("Error getting TODO tasks", err)
+        })
+
+        pb.collection("tasks").getFullList({ sort: "deadline", filter: "complete = true" })
+        .then(tasks => {
+            setCompleteTasks(tasks)
+        })
+        .catch(err => {
+            console.error("Error getting complete tasks", err)
+        })
+
     }, [])
 
     return (
@@ -24,7 +39,6 @@ export function TodoTasks({ setOpenAppID }) {
                     <tr>
                         <th>Task</th>
                         <th>Deadline</th>
-                        <th style={{width:"1.5rem"}} className="text-center">T</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,13 +53,12 @@ export function TodoTasks({ setOpenAppID }) {
                                     <tr
                                         className="cursor-pointer"
                                         key={task.taskID}
-                                        onClick={() => setOpenAppID(task.appID)}
+                                        onClick={() => setOpenAppID(task.application)}
                                     >
                                         <td>{task?.info}</td>
                                         <td
                                             className={diff > 0 ? styles.late : ''}
-                                        >{task?.deadline}</td>
-                                        <td className="text-center">{task?.app?.type === "placement" ? "P" : "I"}</td>
+                                        >{getDate(task?.deadline)}</td>
                                     </tr>
                                 )
                             })
@@ -59,10 +72,10 @@ export function TodoTasks({ setOpenAppID }) {
                                     <tr
                                         className="cursor-pointer"
                                         key={task.taskID}
-                                        onClick={() => setOpenAppID(task.appID)}
+                                        onClick={() => setOpenAppID(task.application)}
                                     >
                                         <td>{task?.info}</td>
-                                        <td>{task?.deadline}</td>
+                                        <td>{getDate(task?.deadline)}</td>
                                     </tr>
                                 )
                             })

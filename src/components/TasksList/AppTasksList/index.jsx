@@ -3,7 +3,9 @@ import { TableSection } from "../../TableSection"
 import { TableRows } from "../../ApplicationsList/TableRows"
 import { Popup } from "../../Popup"
 import { TaskView } from "../../forms/TaskView"
-import { DOMAIN } from "../../../globals"
+import { usePocket } from "../../../contexts/pocketContext"
+import { getDate } from "../../../helpers/dates"
+
 
 export function AppTasksList({ appID, counter, setCounter }) {
 
@@ -13,15 +15,25 @@ export function AppTasksList({ appID, counter, setCounter }) {
     const [ todoTasks, setTodoTasks ] = useState([])
     const [ completeTasks, setCompleteTasks ] = useState([])
 
+    const { pb } = usePocket()
+
     useEffect(() => {
-        fetch(DOMAIN + "/get-app-tasks?appID=" + appID)
-        .then(res => res.json())
-        .then(tasksData => {
-            console.log("tasks data", tasksData)
-            setTodoTasks(tasksData.filter(task => task.complete === false))
-            setCompleteTasks(tasksData.filter(task => task.complete === true))
+
+        pb.collection("tasks").getFullList({ sort: "deadline", filter: "complete = false" })
+        .then(tasks => {
+            console.log(tasks)
+            setTodoTasks(tasks)
         })
-    }, [appID, counter ])
+        .catch(err => console.error("Error getting TODO tasks", err))
+
+        pb.collection("tasks").getFullList({ sort: "deadline", filter: "complete = true" })
+        .then(tasks => {
+            console.log(tasks)
+            setCompleteTasks(tasks)
+        })
+        .catch(err => console.error("Error getting complete tasks", err))
+
+    }, [ appID, counter ])
 
     return (
         <>
@@ -51,7 +63,7 @@ export function AppTasksList({ appID, counter, setCounter }) {
                                             <input type="checkbox" checked={task?.complete} />
                                         </td>
                                         <td>{task?.info}</td>
-                                        <td>{task?.deadline}</td>
+                                        <td>{getDate(task?.deadline)}</td>
                                     </tr>
                                 )
                             })
@@ -72,7 +84,7 @@ export function AppTasksList({ appID, counter, setCounter }) {
                                             <input type="checkbox" checked={task?.complete} />
                                         </td>
                                         <td>{task?.info}</td>
-                                        <td>{task?.deadline}</td>
+                                        <td>{getDate(task?.deadline)}</td>
                                     </tr>
                                 )
                             })

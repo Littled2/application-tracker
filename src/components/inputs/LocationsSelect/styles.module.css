@@ -1,0 +1,38 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.locations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.locations > div {
+    display: flex;
+    border: 1px solid var(--light-grey);
+    background-color: var(--dark-grey);
+}
+
+.locations > div > button {
+    padding: 2px;
+    background-color: transparent;
+    border: none;
+    color: white;
+    border-right: 1px solid var(--light-grey);
+}
+
+.locations > div > button:hover {
+    background-color: var(--light-grey);
+}
+
+.locations > div > span {
+    padding: 4px;
+}
+
+.add {
+    display: flex;
+    gap: 0.75rem;
+}

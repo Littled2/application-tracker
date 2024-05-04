@@ -1,3 +1,4 @@
+import { getDate } from "../../../helpers/dates"
 import styles from "./styles.module.css"
 
 export function TableRows({ items, setOpenAppID, showType=true, showDeadline=false, showDeadlineType=false }) {
@@ -7,8 +8,8 @@ export function TableRows({ items, setOpenAppID, showType=true, showDeadline=fal
                 items.map((item, i) => {
                     return (
                         <tr key={i}>
-                            <td className={styles.org}>{item?.org?.name}</td>
-                            <td className="cursor-pointer" onClick={() => setOpenAppID(item.id)}>{item?.name}</td>
+                            <td className={styles.org}>{item?.expand?.organisation?.name}</td>
+                            <td className="cursor-pointer" onClick={() => setOpenAppID(item.id)}>{item?.role}</td>
                             {
                                 showType ? (
                                     <td>
@@ -26,7 +27,15 @@ export function TableRows({ items, setOpenAppID, showType=true, showDeadline=fal
                             }
                             {
                                 showDeadline ? (
-                                    <td className={styles.dln}>{item?.deadline}</td>
+                                    <td className={styles.dln}>
+                                        {
+                                            item?.deadline ? (
+                                                getDate(item?.deadline)
+                                            ) : (
+                                                <></>
+                                            )
+                                        }
+                                    </td>
                                 ) : (
                                     <></>
                                 )
@@ -34,7 +43,7 @@ export function TableRows({ items, setOpenAppID, showType=true, showDeadline=fal
                             {
                                 showDeadlineType ? (
                                     <td>
-                                        {
+                                        {/* {
                                             item?.deadlineType ? (
                                                 item.deadlineType  === "fixed" ? (
                                                     "F"
@@ -44,6 +53,9 @@ export function TableRows({ items, setOpenAppID, showType=true, showDeadline=fal
                                             ) : (
                                                 <></>
                                             )
+                                        } */}
+                                        {
+                                            item?.deadlineType.substring(0, 1).toUpperCase()
                                         }
                                     </td>
                                 ) : (

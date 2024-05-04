@@ -1,9 +1,23 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import styles from "./styles.module.css"
 
-export function Tabs({ tabs }) {
+export function Tabs({ tabs, saveActiveTabAs=null }) {
 
-    const [ selected, setSelected ] = useState(0)
+    const [ selected, setSelected ] = useState(
+        saveActiveTabAs ? (
+            localStorage.getItem(saveActiveTabAs) ? (
+                localStorage.getItem(saveActiveTabAs)
+            ) : (
+                0
+            )
+        ) : (
+            0
+        )
+    )
+
+    useEffect(() => {
+        localStorage.setItem(saveActiveTabAs, selected)
+    }, [ selected ])
 
     return (
         <div>

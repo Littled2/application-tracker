@@ -1,23 +1,46 @@
 import { useEffect, useState } from "react"
 import styles from "./styles.module.css"
 import { DOMAIN } from "../../globals"
+import { useActiveYear } from "../../contexts/activeYearContext"
+import { usePocket } from "../../contexts/pocketContext"
 
 export function NumbersOverview() {
 
     const [ breakdown, setBreakdown ] = useState({})
     const [ err, setErr ] = useState(false)
 
+    const { pb } = usePocket()
+
+    const { activeYear } = useActiveYear()
+
+    
+
     useEffect(() => {
-        fetch(DOMAIN + "/get-totals")
-        .then(res => res.json())
-        .then(breakdownData => {
-            setBreakdown(breakdownData)
+
+        pb.collection("stageBreakdown").getFullList({ filter: `year = "${activeYear}"` })
+        .then(res => {
+
+            let freq = {
+                idea: 0,
+                applying: 0,
+                applied: 0,
+                accepted: 0,
+                declined: 0
+            }
+
+            res.forEach(stage => {
+                freq[stage.stage] = stage.count
+            })
+
+            setBreakdown(freq)
+            
         })
         .catch(error => {
-            console.error(error)
+            console.error("Error getting stages breakdown", error)
             setErr(true)
         })
-    }, [])
+
+    }, [activeYear])
 
     
     return !err ? (

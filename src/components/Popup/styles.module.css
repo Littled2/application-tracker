@@ -37,6 +37,6 @@
     color: var(--text-white);
 }
 .popup .content {
-    padding: 8px;
+    padding: 0.75rem;
     overflow-y: auto;
 }

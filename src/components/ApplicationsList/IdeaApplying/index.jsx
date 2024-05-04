@@ -2,27 +2,31 @@ import { useEffect, useState } from "react"
 import styles from "./styles.module.css"
 import { TableRows } from "../TableRows"
 import { TableSection } from "../../TableSection"
-import { DOMAIN } from "../../../globals"
+import { usePocket } from "../../../contexts/pocketContext"
+import { useActiveYear } from "../../../contexts/activeYearContext"
 
 export function IdeasApplying({ counter, setOpenAppID }) {
 
     const [ ideas, setIdeas ] = useState([])
     const [ applying, setApplying ] = useState([])
 
+    const { activeYear } = useActiveYear()
+
+    const { pb } = usePocket()
+
     const [ err, setErr ] = useState(false)
 
     useEffect(() => {
-        fetch(DOMAIN + "/get-pre-applications")
-        .then(res => res.json())
+        pb.collection("applications").getFullList({ filter: `year = "${activeYear}" && (stage = "idea" || stage = "applying")`, expand: "locations, organisation", sort: "deadline" })
         .then(apps => {
             setIdeas(apps.filter(app => app.stage === "idea"))
             setApplying(apps.filter(app => app.stage === "applying"))
         })
         .catch(error => {
-            console.error(error)
+            console.error("Error getting applications", error)
             setErr(true)
         })
-    }, [counter])
+    }, [ counter, activeYear ])
 
 
     return !err ? (

@@ -1,0 +1,16 @@
+.wrapper {
+    margin: auto;
+    /* background-color: black; */
+    border: 2px solid var(--dark-grey);
+    padding: 18px;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}

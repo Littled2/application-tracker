@@ -3,6 +3,8 @@ import { TableRows } from "../TableRows"
 import { useEffect } from "react"
 import { TableSection } from "../../TableSection"
 import { DOMAIN } from "../../../globals"
+import { useActiveYear } from "../../../contexts/activeYearContext"
+import { usePocket } from "../../../contexts/pocketContext"
 
 
 export function Applied({ counter, setOpenAppID }) {
@@ -11,17 +13,20 @@ export function Applied({ counter, setOpenAppID }) {
 
     const [ err, setErr ] = useState(false)
 
+    const { activeYear } = useActiveYear()
+
+    const { pb } = usePocket()
+
     useEffect(() => {
-        fetch(DOMAIN + "/get-pre-applications")
-        .then(res => res.json())
+        pb.collection("applications").getFullList({ filter: `year = "${activeYear}" && stage = "applied"`, expand: "locations, organisation" })
         .then(apps => {
-            setApplied(apps.filter(app => app.stage === "applied"))
+            setApplied(apps)
         })
         .catch(error => {
-            console.error(error)
+            console.error("Error getting applications", error)
             setErr(true)
         })
-    }, [counter])
+    }, [counter, activeYear])
 
     return !err ? (
         <table>
@@ -37,7 +42,7 @@ export function Applied({ counter, setOpenAppID }) {
             <tbody>
 
                 <TableSection name="Applied" amount={applied.length}>
-                <TableRows setOpenAppID={setOpenAppID} items={applied} showType={true} showDeadline={true} showDeadlineType={true}/>
+                    <TableRows setOpenAppID={setOpenAppID} items={applied} showType={true} showDeadline={true} showDeadlineType={true}/>
                 </TableSection>
 
             </tbody>

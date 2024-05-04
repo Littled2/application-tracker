@@ -1,5 +1,6 @@
 .wrapper {
     padding: var(--spacing-small) var(--spacing-medium);
+    padding-top: calc(var(--spacing-medium) + 1rem);
 }
 
 .asidePage {
@@ -8,7 +9,7 @@
 }
 
 .dataVisWrapper {
-    height: 300px;
+    min-height: 300px;
     display: flex;
     gap: var(--spacing-medium);
 }
@@ -25,6 +26,7 @@
 .tablesWrapper {
     display: flex;
     gap: var(--spacing-medium);
+    height: calc(100vh - 300px);
 }
 
 
@@ -38,4 +40,9 @@
     .tasksWrapper {
         width: 100%;
     }
+}
+
+
+.loginWrapper {
+    padding: 16px;
 }

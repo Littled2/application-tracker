@@ -1,0 +1,20 @@
+.opportunityWrapper {
+    padding: 1rem;
+    border: 2px solid var(--dark-grey);
+    display: flex;
+    gap: 1rem;
+}
+
+.table {
+    width: 100%;
+    height: 200px;
+}
+
+.openOpportunity {
+    width: 800px;
+}
+
+.btn {
+    background-color: var(--dark-grey);
+    color: whitesmoke;
+}

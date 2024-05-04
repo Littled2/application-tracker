@@ -3,13 +3,18 @@ import styles from "./styles.module.css"
 import { Popup } from "../../components/Popup"
 import { NewTask } from "../../components/forms/NewTask"
 import { LiaEdit } from "react-icons/lia"
+import { GrDocument, GrDocumentDownload } from "react-icons/gr";
 import { EditApp } from "../../components/forms/EditApp"
 import { AppTasksList } from "../../components/TasksList/AppTasksList"
 import { DOMAIN } from "../../globals"
 import { AiOutlineClose } from "react-icons/ai"
 import { LinkView } from "./LinkView"
+import { usePocket } from "../../contexts/pocketContext"
+import { getDate } from "../../helpers/dates"
+import { DocumentUploadDownload } from "./DocumentUploadDownload"
+import { useActiveYear } from "../../contexts/activeYearContext"
 
-export function ApplicationView({ openAppID, setOpenAppID }) {
+export function ApplicationView({ openAppID, setOpenAppID, counter, setCounter }) {
 
     const [ application, setApplication ] = useState({})
     const [ err, setErr ] = useState(false)
@@ -17,25 +22,35 @@ export function ApplicationView({ openAppID, setOpenAppID }) {
     const [ newTaskOpen, setNewTaskOpen ] = useState()
     const [ editAppOpen, setEditAppOpen ] = useState()
 
-    const [ counter, setCounter ] = useState(0)
+    const { activeYear } = useActiveYear()
+
+    const { pb } = usePocket()
 
     useEffect(() => {
 
-        fetchApp()
+        if(!openAppID) return
 
-    }, [ openAppID ])
+        pb.collection("applications").subscribe(openAppID, e => {
+            setApplication(e.record)
+        }, { expand:"locations, organisation" })
 
-    function fetchApp() {
-        fetch(DOMAIN + "/get-application?id=" + openAppID)
-        .then(res => res.json())
-        .then(appData => {
-            setApplication(appData)
+        pb.collection("applications").getOne(openAppID, { expand:"locations, organisation" })
+        .then(app => {
+
+            // If the year has changed, close the tab
+            if(activeYear !== app.year) {
+                setOpenAppID(null)
+            }
+
+            setApplication(app)
+            setCounter(c => c + 1)
         })
-        .catch(error => {
-            console.error(error)
+        .catch(err => {
+            console.error("Error getting application", err)
             setErr(true)
         })
-    }
+
+    }, [ openAppID, editAppOpen, activeYear ])
 
 
     return (
@@ -54,13 +69,13 @@ export function ApplicationView({ openAppID, setOpenAppID }) {
                             <div>
                                 <h4 className="text-white flex align-center gap-s">
                                     <span onClick={() => setEditAppOpen(true)}><LiaEdit /></span>
-                                    {application?.name}
+                                    {application?.role}
                                 </h4>
                                 <hr/>
                             </div>
                             
                             <Popup title={"Edit Application"} trigger={editAppOpen} setTrigger={setEditAppOpen}>
-                                <EditApp fetchApp={fetchApp} setTrigger={setEditAppOpen} app={application}/>
+                                <EditApp setTrigger={setEditAppOpen} app={application}/>
                             </Popup>
         
                             <div className="flex gap-s">
@@ -68,11 +83,22 @@ export function ApplicationView({ openAppID, setOpenAppID }) {
                                     <tbody>
                                         <tr>
                                             <td className="text-white">Company</td>
-                                            <td>{application?.org?.name}</td>
+                                            <td>{application?.expand?.organisation?.name}</td>
                                         </tr>
                                         <tr>
                                             <td className="text-white">Location(s)</td>
-                                            <td>{application?.locations?.join(", ")}</td>
+                                            <td>
+                                                {
+                                                    application?.expand?.locations?.map((loc, i) => <span key={i}>{loc?.name}{i < application?.expand?.locations.length - 1 ? ", " : ""}</span>)
+                                                }
+                                            </td>
+                                        </tr>
+                                        <tr><td><br /></td></tr>
+                                        <tr>
+                                            <td className="text-white">CV</td>
+                                            <td>
+                                                <DocumentUploadDownload application={application} fileKeyName={"cv"} />
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -83,12 +109,31 @@ export function ApplicationView({ openAppID, setOpenAppID }) {
                                             <td>{application?.deadlineType ? application?.deadlineType : "-"}</td>
                                         </tr>
                                         <tr>
-                                            <td className="text-white">Deadline</td>
-                                            <td>{application?.deadline ? application?.deadline : "-"}</td>
+                                            {
+                                                application?.deadlineType === "fixed" ? (
+                                                    <>
+                                                        <td className="text-white">Deadline</td>
+                                                        <td>{application?.deadline ? getDate(application?.deadline) : "-"}</td>       
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <td><br /></td>
+                                                        <td><br /></td>
+                                                    </>
+                                                )
+                                            }
+                                        </tr>
+                                        <tr><td><br /></td></tr>
+                                        <tr>
+                                            <td className="text-white">Cover Letter</td>
+                                            <td>
+                                                <DocumentUploadDownload application={application} fileKeyName={"coverLetter"} />
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
+
 
                             {/* <div className="flex gap-s">
                                 {

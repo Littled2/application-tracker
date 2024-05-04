@@ -1,35 +1,31 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { DOMAIN } from "../../../globals"
+import { usePocket } from "../../../contexts/pocketContext"
+import { DateInput } from "../../inputs/DateInput"
 
-export function NewTask({ appID, counter, setCounter, setTrigger }) {
+export function NewTask({ appID, setCounter, setTrigger }) {
 
-    const taskRef = useRef()
-    const deadlineRef = useRef()
+    const [ info, setInfo ] = useState()
+    const [ deadline, setDeadline ] = useState(new Date())
+
+    const { pb, user } = usePocket()
 
     function submit(e) {
         e.preventDefault()
 
-        const newTask = {
-            appID: appID,
-            info: taskRef.current.value,
-            deadline: deadlineRef.current.value
-        }
-
-        fetch(DOMAIN + "/new-task", {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newTask)
+        pb.collection("tasks").create({
+            "info": info,
+            "deadline": deadline,
+            "user": user.id,
+            "complete": false,
+            "application": appID
         })
         .then(res => {
-            console.log(res)
-            setCounter(counter + 1)
+            setCounter(c => c + 1)
             setTrigger(false)
         })
         .catch(err => {
-            console.error("Error setting task", err)
+            console.error("Error creating task", err)
         })
 
     }
@@ -40,13 +36,13 @@ export function NewTask({ appID, counter, setCounter, setTrigger }) {
                 <div>
                     <label>Task</label>
                 </div>
-                <input type="text" ref={taskRef} required />
+                <input type="text" value={info} onChange={e => setInfo(e.target.value)} required />
             </div>
             <div>
                 <div>
                     <label>Deadline</label>
                 </div>
-                <input type="date" ref={deadlineRef} required />
+                <DateInput date={deadline} setDate={setDeadline} />
             </div>
             <div>
                 <button type="submit">Save</button>
