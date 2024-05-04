@@ -2,27 +2,19 @@
 
 To track internship applications and placement applications
 
-## Specification
 
-- Track applications and store info about them
-- Track tasks required for applications
-- Track files attached to applications
-
-### Database Specification
-
-#### Applications
-id, name, orgID, stage, info, link, locations, deadline_type, deadline, files
-
-#### Organisations
-orgID, name, logoURL
-
-#### Tasks
-id, applicationID, name, deadline, complete
+# Use the application live at [edward-blewitt.uk](http://edward-blewitt.uk)
 
 
-## Tasks
-1. Allow user to add applications
-2. Allow user to edit applications
-3. Allow user to add tasks
-4. Allow user to edit tasks
-5. Allow user to mark tasks as done
+# Self-hosting
+
+1. Download this repo
+2. Build and run the React app
+3. Download Pocketbase from [pocketbase.io](https://pocketbase.io/) and import the schema from pocketbase_schema.json
+4. Change the variable `BASE_URL` in the `./src/contexts/pocketContext.jsx` file to the host that you are running the pocketbase instance from.
+
+
+
+## TODO
+1. Allow users to delete tasks
+2. Delete related tasks when an application is deleted
