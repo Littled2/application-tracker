@@ -9,9 +9,9 @@ To track internship applications and placement applications
 # Self-hosting
 
 1. Download this repo
-2. Build and run the React app
-3. Download Pocketbase from [pocketbase.io](https://pocketbase.io/) and import the schema from pocketbase_schema.json
-4. Change the variable `BASE_URL` in the `./src/contexts/pocketContext.jsx` file to the host that you are running the pocketbase instance from.
+2. Download Pocketbase from [pocketbase.io](https://pocketbase.io/), run it,  and import the schema from pocketbase_schema.json
+3. Change the variable `BASE_URL` in the `./src/contexts/pocketContext.jsx` file to the host that you are running the pocketbase instance from.
+4. Build and run the React app
 
 
 

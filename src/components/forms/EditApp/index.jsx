@@ -29,8 +29,6 @@ export function EditApp({ app, setTrigger }) {
     function submit(e) {
         e.preventDefault()
 
-        console.log({locations})
-
         const data = {
             "role": role,
             "info": info,

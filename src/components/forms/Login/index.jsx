@@ -24,7 +24,7 @@ export function Login() {
     return (
         <div className={styles.wrapper}>
 
-            <h3>Login</h3>
+            <h3>Login to the application tracker</h3>
 
             <form className={`form ${styles.form}`} onSubmit={submit}>
 

@@ -12,13 +12,13 @@ export function Login() {
                 <div>
                     <label>Username</label>
                 </div>
-                <input placeholder="Username" type="text" {...register("username")}></input>
+                <input style={{ width: "100%" }} placeholder="Username" type="text" {...register("username")}></input>
             </div>
             <div>
                 <div>
                     <label>Password</label>
                 </div>
-                <input placeholder="Password" type="password" {...register("password")}></input>
+                <input style={{ width: "100%" }} placeholder="Password" type="password" {...register("password")}></input>
             </div>
             <div>
                 <input type="submit"/>
