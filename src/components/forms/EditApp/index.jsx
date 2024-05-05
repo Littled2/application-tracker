@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { SelectOrganisation } from "../../inputs/SelectOrganisation";
-import { DOMAIN } from "../../../globals";
 import { usePocket } from "../../../contexts/pocketContext";
 import { LocationsSelect } from "../../inputs/LocationsSelect";
 import { BiPlus } from "react-icons/bi";

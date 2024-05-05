@@ -1,9 +1,7 @@
 import { useState } from "react"
 import { TableRows } from "../TableRows"
-import styles from "./styles.module.css"
 import { useEffect } from "react"
 import { TableSection } from "../../TableSection"
-import { DOMAIN } from "../../../globals"
 import { useActiveYear } from "../../../contexts/activeYearContext"
 import { usePocket } from "../../../contexts/pocketContext"
 

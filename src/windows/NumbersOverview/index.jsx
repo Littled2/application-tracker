@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import styles from "./styles.module.css"
-import { DOMAIN } from "../../globals"
 import { useActiveYear } from "../../contexts/activeYearContext"
 import { usePocket } from "../../contexts/pocketContext"
 

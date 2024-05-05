@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { TableSection } from "../../TableSection"
-import { DOMAIN } from "../../../globals"
 import styles from "./styles.module.css"
 import { usePocket } from "../../../contexts/pocketContext"
 import { getDate } from "../../../helpers/dates"

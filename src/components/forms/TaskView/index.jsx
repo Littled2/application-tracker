@@ -1,5 +1,4 @@
 import { useRef, useState } from "react"
-import { DOMAIN } from "../../../globals"
 import { usePocket } from "../../../contexts/pocketContext"
 import { DateInput } from "../../inputs/DateInput"
 

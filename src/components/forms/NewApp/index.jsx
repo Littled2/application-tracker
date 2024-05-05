@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { SelectOrganisation } from "../../inputs/SelectOrganisation";
-import { DOMAIN } from "../../../globals";
 import styles from "./styles.module.css"
 import { usePocket } from "../../../contexts/pocketContext";
 import { useActiveYear } from "../../../contexts/activeYearContext";

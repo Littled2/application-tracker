@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Bar } from "react-chartjs-2"
-import { DOMAIN } from "../../../globals"
 
 export function TasksDeadlinesChart() {
 

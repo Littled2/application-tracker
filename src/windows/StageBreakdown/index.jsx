@@ -2,7 +2,6 @@ import styles from "./styles.module.css"
 
 import { useEffect, useState } from "react";
 import { Bar, Pie } from "react-chartjs-2";
-import { DOMAIN } from "../../globals";
 import { usePocket } from "../../contexts/pocketContext";
 import { useActiveYear } from "../../contexts/activeYearContext";
 

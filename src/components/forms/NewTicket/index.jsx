@@ -1,5 +1,4 @@
 import { useRef } from "react"
-import { DOMAIN } from "../../../globals"
 
 export function NewTicket({ setTrigger }) {
 
@@ -8,24 +7,7 @@ export function NewTicket({ setTrigger }) {
     function submit(e) {
         e.preventDefault()
 
-        fetch(DOMAIN + "/new-ticket", {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                ticket: ticketRef.current.value
-            })
-        })
-        .then(res => res.text())
-        .then(res => {
-            console.log(res)
-            setTrigger(false)
-        })
-        .catch(err => {
-            console.error("Error setting task", err)
-        })
+        console.log("New Ticket")
     }
 
     return (
