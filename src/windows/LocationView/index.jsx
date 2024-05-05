@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import styles from "./styles.module.css"
 import ukImage from "./UK.png"
 import { DOMAIN } from "../../globals";
@@ -13,14 +13,15 @@ function capitalizeFirstLetter(string) {
 
 export function LocationView() {
 
-    const [ locations, setLocations ] = useState([])
-
     const { pb } = usePocket()
+
     const { activeYear } = useActiveYear()
 
     const [ hover, setHover ] = useState(null)
 
     const [ appLocations, setAppLocations ] = useState([])
+
+    const table = useRef()
 
     useEffect(() => {
         
@@ -66,7 +67,7 @@ export function LocationView() {
         <div className={styles.wrapper}>
             <div>
                 <b>Locations</b>
-                <table style={{ fontSize: "0.8rem" }}>
+                <table style={{ fontSize: "0.8rem" }} ref={table}>
                     <tbody>
                         {
                             Object.keys(appLocations).map((locID, i) => {

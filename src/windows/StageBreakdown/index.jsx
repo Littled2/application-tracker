@@ -151,11 +151,11 @@ export function StageBreakdown() {
                 </div>
             </div>
             <div className="flex gap-s justify-center">
-                <b style={{ padding: "0 4px", backgroundColor: "coral", color: "black" }}><small>Idea</small></b>
-                <b style={{ padding: "0 4px", backgroundColor: "#bcb067", color: "rgb(52 49 32)" }}><small>Applying</small></b>
-                <b style={{ padding: "0 4px", backgroundColor: "lightblue", color: "rgb(8 59 19)" }}><small>Applied</small></b>
-                <b style={{ padding: "0 4px", backgroundColor: "#00a522", color: "rgb(52 49 32)" }}><small>Accepted</small></b>
-                <b style={{ padding: "0 4px", backgroundColor: "#8b0b20", color: "rgb(8 59 19)" }}><small>Declined</small></b>
+                <b style={{ padding: "0 4px", backgroundColor: "coral", color: "rgba(0,0,0,0.85)" }}><small>Idea</small></b>
+                <b style={{ padding: "0 4px", backgroundColor: "#bcb067", color: "rgba(0,0,0,0.85)" }}><small>Applying</small></b>
+                <b style={{ padding: "0 4px", backgroundColor: "lightblue", color: "rgba(0,0,0,0.85)" }}><small>Applied</small></b>
+                <b style={{ padding: "0 4px", backgroundColor: "#00a522", color: "rgba(0,0,0,0.85)" }}><small>Accepted</small></b>
+                <b style={{ padding: "0 4px", backgroundColor: "#8b0b20", color: "rgba(0,0,0,0.85)" }}><small>Declined</small></b>
             </div>
         </div>
     )

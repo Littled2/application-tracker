@@ -19,14 +19,14 @@ export function AppTasksList({ appID, counter, setCounter }) {
 
     useEffect(() => {
 
-        pb.collection("tasks").getFullList({ sort: "deadline", filter: "complete = false" })
+        pb.collection("tasks").getFullList({ sort: "deadline", filter: `complete = false && application = "${appID}"` })
         .then(tasks => {
             console.log(tasks)
             setTodoTasks(tasks)
         })
         .catch(err => console.error("Error getting TODO tasks", err))
 
-        pb.collection("tasks").getFullList({ sort: "deadline", filter: "complete = true" })
+        pb.collection("tasks").getFullList({ sort: "deadline", filter: `complete = true && application = "${appID}"` })
         .then(tasks => {
             console.log(tasks)
             setCompleteTasks(tasks)
