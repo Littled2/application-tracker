@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import styles from "./styles.module.css"
 import ukImage from "./UK.png"
-import { DOMAIN } from "../../globals";
 import { usePocket } from "../../contexts/pocketContext";
 import { useActiveYear } from "../../contexts/activeYearContext";
 
