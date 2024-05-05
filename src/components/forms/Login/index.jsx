@@ -32,14 +32,14 @@ export function Login() {
                     <div>
                         <label>Email</label>
                     </div>
-                    <input value={email} onChange={e => setEmail(e.target.value)} type="text" required />
+                    <input style={{ width: "100%" }} value={email} onChange={e => setEmail(e.target.value)} type="text" required />
                 </div>
 
                 <div>
                     <div>
                         <label>Password</label>
                     </div>
-                    <input value={password} onChange={e => setPassword(e.target.value)} type="password" required />
+                    <input style={{ width: "100%" }} value={password} onChange={e => setPassword(e.target.value)} type="password" required />
                 </div>
 
                 <div>
