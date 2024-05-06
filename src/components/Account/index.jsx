@@ -4,6 +4,7 @@ import { usePocket } from "../../contexts/pocketContext"
 import { useEffect, useState } from "react"
 import { FiDelete } from "react-icons/fi"
 import { BsTrash } from "react-icons/bs"
+import { useActiveYear } from "../../contexts/activeYearContext"
 
 export function Account({ setTrigger }) {
 
@@ -11,6 +12,8 @@ export function Account({ setTrigger }) {
     const { pb } = usePocket()
 
     const [ years, setYears ] = useState([])
+
+    const { clearActiveYears } = useActiveYear()
 
     useEffect(() => {
         pb.collection("years").getFullList()
@@ -21,7 +24,7 @@ export function Account({ setTrigger }) {
 
     return (
         <section className={styles.wrapper}>
-            <div>
+            {/* <div>
                 <p>Years you have registered</p>
                 <table>
                     <thead>
@@ -47,12 +50,13 @@ export function Account({ setTrigger }) {
                         }
                     </tbody>
                 </table>
-            </div>
+            </div> */}
             <div>
                 <p>Log out of your account</p>
                 <button onClick={() => {
                     setTrigger(false)
                     logout()
+                    clearActiveYears()
                 }}><BiLogOut /> Logout</button>
             </div>
         </section>

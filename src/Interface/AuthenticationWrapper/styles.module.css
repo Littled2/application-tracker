@@ -1,0 +1,17 @@
+.wrapper {
+    margin: auto;
+    padding: 18px;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12%;
+}
+
+.tab {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    border: 2px solid var(--dark-grey);
+}

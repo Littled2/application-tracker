@@ -23,22 +23,7 @@ export function Header({ counter, setCounter }) {
 
     const [ lightTheme, setLightTheme ] = useState(false)
 
-    const [ years, setYears ] = useState([])
-
-    const { activeYear, setActiveYear } = useActiveYear()
-
-
-    useEffect(() => {
-
-        pb.collection("years").getFullList()
-        .then(years => {
-            setYears(years)
-        })
-        .catch(err => {
-            console.error("Error getting years", err)
-        })
-
-    }, [ newYearOpen ])
+    const { activeYear, setActiveYear, years } = useActiveYear()
 
 
     return (
@@ -56,39 +41,48 @@ export function Header({ counter, setCounter }) {
                 <header className="flex gap-s align-center space-between">
                     {
                         user ? (
-                            <>
-                                <div>
-                                    <button onClick={() => setNewAppOpen(true)}>New Application +</button>
-                                </div>
+                            years.length > 0 ? (
+                                <>
+                                    <div>
+                                        <button onClick={() => setNewAppOpen(true)}>New Application +</button>
+                                    </div>
 
-                                <div className={styles.years}>
-                                    {
-                                        years.map((y, i) => {
-                                            return (
-                                                <button className={y.id === activeYear ? styles.selected : ""} key={i} onClick={() => setActiveYear(y.id)}>{y?.year}</button>
-                                            )
-                                        })
-                                    }
-
-                                    <button onClick={() => setNewYearOpen(true)}><BiPlus /></button>
-                                </div>
-
-                                <div>
-                                    <button onClick={() => setNewTicketOpen(true)}><IoTicketOutline/></button>
-                                    <button onClick={() => setLightTheme(!lightTheme)}>
+                                    <div className={styles.years}>
                                         {
-                                            !lightTheme ? (
-                                                <FiMoon />
-                                            ) : (
-                                                <BsSun />
-                                            )
+                                            years.map((y, i) => {
+                                                return (
+                                                    <button className={y.id === activeYear ? styles.selected : ""} key={i} onClick={() => setActiveYear(y.id)}>{y?.year}</button>
+                                                )
+                                            })
                                         }
-                                    </button>
+
+                                        <button onClick={() => setNewYearOpen(true)}><BiPlus /></button>
+                                    </div>
+
+                                    <div>
+                                        <button onClick={() => setNewTicketOpen(true)}><IoTicketOutline/></button>
+                                        <button onClick={() => setLightTheme(!lightTheme)}>
+                                            {
+                                                !lightTheme ? (
+                                                    <FiMoon />
+                                                ) : (
+                                                    <BsSun />
+                                                )
+                                            }
+                                        </button>
+                                        <button onClick={() => setAccountOpen(true)}>
+                                            <BsPerson />
+                                        </button>
+                                    </div>       
+                                </>
+                            ) : (
+                                <>
+                                    <br />
                                     <button onClick={() => setAccountOpen(true)}>
                                         <BsPerson />
                                     </button>
-                                </div>       
-                            </>
+                                </>
+                            )
                         ) : (
                             <></>
                         )

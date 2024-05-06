@@ -29,6 +29,15 @@
     height: calc(100vh - 300px);
 }
 
+.noYearsWrapper {
+    padding: 24px;
+    padding-top: 12%;
+    max-width: 800px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
 
 @media screen and (max-width: 800px) {
     .dataVisWrapper {

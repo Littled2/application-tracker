@@ -7,7 +7,7 @@ export function TableRows({ items, setOpenAppID, showType=true, showDeadline=fal
             {
                 items.map((item, i) => {
                     return (
-                        <tr key={i}>
+                        <tr key={i} className="cursor-pointer" onClick={() => setOpenAppID(item.id)}>
                             <td className={styles.org}>{item?.expand?.organisation?.name}</td>
                             <td className="cursor-pointer" onClick={() => setOpenAppID(item.id)}>{item?.role}</td>
                             {
