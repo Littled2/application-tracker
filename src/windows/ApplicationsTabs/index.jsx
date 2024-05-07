@@ -17,7 +17,7 @@ export function ApplicationsTabs({ counter, setOpenAppID }) {
     const [ acceptedDeclined, setAcceptedDeclined ] = useState(0)
 
     useEffect(() => {
-        pb.collection("totalTypeByYear").getFullList()
+        pb.collection("stageBreakdown").getFullList()
         .then(totals => {
 
             let temp = {}

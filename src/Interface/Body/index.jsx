@@ -26,75 +26,81 @@ export function Body({ counter, setCounter }) {
 
     const [ openAppID, setOpenAppID ] = useState(null)
 
+    const { activeYear } = useActiveYear()
+
     return user ? (
         years.length > 0 ? (
-            <main className={[ "flex gap-m", styles.wrapper ].join(' ')}>
+            activeYear ? (
+                <main className={[ "flex gap-m", styles.wrapper ].join(' ')}>
 
-                <div className="flex col gap-m flex-1">
-                    <div className={styles.dataVisWrapper}>
+                    <div className="flex col gap-m flex-1">
+                        <div className={styles.dataVisWrapper}>
 
-                        <LocationView />
+                            <LocationView />
 
-                        <StageBreakdown />
+                            <StageBreakdown />
 
-                        {
-                            openAppID === null ? (
-                                <NumbersOverview />
-                            ) : (
-                                <></>
-                            )
-                        }
+                            {
+                                openAppID === null ? (
+                                    <NumbersOverview />
+                                ) : (
+                                    <></>
+                                )
+                            }
 
-                        {/* {
-                            openAppID === null ? (
-                                <DeadlinesBreakdown />
-                            ) : (
-                                <></>
-                            )
-                        } */}
+                            {/* {
+                                openAppID === null ? (
+                                    <DeadlinesBreakdown />
+                                ) : (
+                                    <></>
+                                )
+                            } */}
+
+                        </div>
+
+                        <div className={styles.tablesWrapper}>
+                            <div className={styles.applicationsWrapper} style={{ height: "calc(100vh - 300px)" }}>
+                                <ApplicationsTabs counter={counter} setOpenAppID={setOpenAppID}  />
+                            </div>
+
+                            {
+                                openAppID === null ? (
+                                    <div className={styles.tasksWrapper}>
+                                        <b>-</b>
+                                        <TodoTasks setOpenAppID={setOpenAppID} />
+                                    </div>
+                                ) : (
+                                    <></>
+                                )
+                            }
+                        </div>
+
+                        {/* <div>
+                            <div className={styles.opportunityWrapper}>
+
+                            </div>
+                            <h5>Opportunities Tracker</h5>
+                            <div className={styles.applicationsWrapper} style={{ height: "calc(100vh - 300px)" }}>
+                                <OpportunitiesTracker />
+                            </div>
+                        </div> */}
 
                     </div>
 
-                    <div className={styles.tablesWrapper}>
-                        <div className={styles.applicationsWrapper} style={{ height: "calc(100vh - 300px)" }}>
-                            <ApplicationsTabs counter={counter} setOpenAppID={setOpenAppID}  />
-                        </div>
+                    {
+                        openAppID !== null ? (
+                            <div className={styles.asidePage}>
+                                <ApplicationView counter={counter} setCounter={setCounter} openAppID={openAppID} setOpenAppID={setOpenAppID} />
+                            </div>
+                        ) : (
+                            <></>
+                        )
+                    }
 
-                        {
-                            openAppID === null ? (
-                                <div className={styles.tasksWrapper}>
-                                    <b>-</b>
-                                    <TodoTasks setOpenAppID={setOpenAppID} />
-                                </div>
-                            ) : (
-                                <></>
-                            )
-                        }
-                    </div>
-
-                    {/* <div>
-                        <div className={styles.opportunityWrapper}>
-
-                        </div>
-                        <h5>Opportunities Tracker</h5>
-                        <div className={styles.applicationsWrapper} style={{ height: "calc(100vh - 300px)" }}>
-                            <OpportunitiesTracker />
-                        </div>
-                    </div> */}
-
-                </div>
-
-                {
-                    openAppID !== null ? (
-                        <div className={styles.asidePage}>
-                            <ApplicationView counter={counter} setCounter={setCounter} openAppID={openAppID} setOpenAppID={setOpenAppID} />
-                        </div>
-                    ) : (
-                        <></>
-                    )
-                }
-
-            </main>
+                </main>
+            ) : (
+                <p style={{ textAlign: "center", marginTop: "12%" }}>Please select an application 'year' group at the top of the screen.</p>
+            )
         ) : (
             <div className={styles.noYearsWrapper}>
 
