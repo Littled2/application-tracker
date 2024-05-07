@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import styles from "./styles.module.css"
 import { Popup } from "../../components/Popup"
 import { NewTask } from "../../components/forms/NewTask"
 import { LiaEdit } from "react-icons/lia"
 import { EditApp } from "../../components/forms/EditApp"
 import { AppTasksList } from "../../components/TasksList/AppTasksList"
-import { AiOutlineClose } from "react-icons/ai"
+import { AiOutlineClose, AiOutlineDelete } from "react-icons/ai"
 import { usePocket } from "../../contexts/pocketContext"
 import { getDate } from "../../helpers/dates"
 import { DocumentUploadDownload } from "./DocumentUploadDownload"
 import { useActiveYear } from "../../contexts/activeYearContext"
+import { Confirm } from "../../components/forms/Confirm"
 
 export function ApplicationView({ openAppID, setOpenAppID, counter, setCounter }) {
 
@@ -18,6 +19,7 @@ export function ApplicationView({ openAppID, setOpenAppID, counter, setCounter }
 
     const [ newTaskOpen, setNewTaskOpen ] = useState()
     const [ editAppOpen, setEditAppOpen ] = useState()
+    const [ confirmOpen, setConfirmOpen ] = useState(false)
 
     const { activeYear } = useActiveYear()
 
@@ -49,10 +51,28 @@ export function ApplicationView({ openAppID, setOpenAppID, counter, setCounter }
 
     }, [ openAppID, editAppOpen, activeYear ])
 
+    const deleteApplication = useCallback(() => {
+        pb.collection('applications').delete(openAppID)
+        .then(() => {
+            setOpenAppID(null)
+        })
+        .catch(err => {
+            console.error("Error deleting application", err)
+            alert("Error deleting application. See console devtools for more information.")
+        })
+    }, [ pb, openAppID ])
+
 
     return (
         <section className={styles.window}>
             <div className={styles.topBar}>
+
+                <button className={styles.close} onClick={() => setConfirmOpen(true)}>
+                    <AiOutlineDelete />
+
+                    <Confirm message={"Are you sure you want to delete this application?"} trigger={confirmOpen} setTrigger={setConfirmOpen} onConfirm={deleteApplication} />
+                </button>
+
                 <button className={styles.close} onClick={() => setOpenAppID(null)}>
                     <AiOutlineClose />
                 </button>

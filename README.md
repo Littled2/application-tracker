@@ -18,3 +18,4 @@ To track internship applications and placement applications
 ## TODO
 1. Allow users to delete tasks
 2. Delete related tasks when an application is deleted
+3. Update the charts when applications change etc

@@ -17,6 +17,16 @@ export function Applied({ counter, setOpenAppID }) {
     const { pb } = usePocket()
 
     useEffect(() => {
+        
+        getApps()
+
+        pb.collection('applications').subscribe('*', getApps)
+
+        return () => pb.collection('applications').unsubscribe()
+
+    }, [counter, activeYear])
+
+    const getApps = () => {
         pb.collection("applications").getFullList({ filter: `year = "${activeYear}" && stage = "applied"`, expand: "locations, organisation" })
         .then(apps => {
             setApplied(apps)
@@ -25,7 +35,7 @@ export function Applied({ counter, setOpenAppID }) {
             console.error("Error getting applications", error)
             setErr(true)
         })
-    }, [counter, activeYear])
+    }
 
     return !err ? (
         <table>

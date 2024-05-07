@@ -17,6 +17,16 @@ export function IdeasApplying({ counter, setOpenAppID }) {
     const [ err, setErr ] = useState(false)
 
     useEffect(() => {
+
+        getApps()
+
+        pb.collection('applications').subscribe('*', getApps)
+
+        return () => pb.collection('applications').unsubscribe()
+
+    }, [ counter, activeYear ])
+
+    const getApps = () => {
         pb.collection("applications").getFullList({ filter: `year = "${activeYear}" && (stage = "idea" || stage = "applying")`, expand: "locations, organisation", sort: "deadline" })
         .then(apps => {
             setIdeas(apps.filter(app => app.stage === "idea"))
@@ -26,7 +36,7 @@ export function IdeasApplying({ counter, setOpenAppID }) {
             console.error("Error getting applications", error)
             setErr(true)
         })
-    }, [ counter, activeYear ])
+    }
 
 
     return !err ? (

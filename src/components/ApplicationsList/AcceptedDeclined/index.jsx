@@ -19,17 +19,26 @@ export function AcceptedDeclined({ counter, setOpenAppID }) {
     const { pb } = usePocket()
 
     useEffect(() => {
+
+            getApps()
+
+            pb.collection('applications').subscribe('*', getApps)
     
-            pb.collection("applications").getFullList({ filter: `year = "${activeYear}" && (stage = "accepted" || stage = "declined")`, expand: "locations, organisation", sort: "deadline" })
-            .then(apps => {
-                setAccepted(apps.filter(app => app.stage === "accepted"))
-                setDeclined(apps.filter(app => app.stage === "declined"))
-            })
-            .catch(error => {
-                console.error("Error getting applications", error)
-                setErr(true)
-            })
+            return () => pb.collection('applications').unsubscribe()
+    
     }, [counter, activeYear])
+
+    const getApps = () => {
+        pb.collection("applications").getFullList({ filter: `year = "${activeYear}" && (stage = "accepted" || stage = "declined")`, expand: "locations, organisation", sort: "deadline" })
+        .then(apps => {
+            setAccepted(apps.filter(app => app.stage === "accepted"))
+            setDeclined(apps.filter(app => app.stage === "declined"))
+        })
+        .catch(error => {
+            console.error("Error getting applications", error)
+            setErr(true)
+        })
+    }
 
     return !err ? (
         <table>
