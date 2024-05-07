@@ -9,12 +9,18 @@ export function Login() {
     const [ email, setEmail ] = useState('')
     const [ password, setPassword ] = useState('')
 
+    const [ processing, setProcessing ] = useState(false)
+
     const [ err, setErr ] = useState()
+    const [ incorrect, setIncorrect ] = useState()
 
     const submit = useCallback((e) => {
         e.preventDefault()
 
         setErr(false)
+        setIncorrect(false)
+
+        setProcessing(true)
 
         login(email, password)
         .then(res => {
@@ -22,8 +28,13 @@ export function Login() {
             
         })
         .catch(err => {
-            console.error("Error login in", err)
-            setErr(true)
+            if(err?.response?.message === "Failed to authenticate.") {
+                setIncorrect(true)
+                setProcessing(false)
+            } else {
+                setErr(true)
+                setProcessing(false)
+            }
         })
     }, [email, password, err])
 
@@ -52,8 +63,24 @@ export function Login() {
                 )
             }
 
+            {
+                incorrect ? (
+                    <p>Incorrect login details</p>
+                ) : (
+                    <></>
+                )
+            }
+
             <div>
-                <button type="submit">Login</button>
+                <button type="submit">
+                    {
+                        !processing ? (
+                            "Login"
+                        ) : (
+                            "Processing..."
+                        )
+                    }
+                </button>
             </div>
 
         </form>

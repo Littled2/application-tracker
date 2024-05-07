@@ -40,6 +40,10 @@ export const ActiveYearProvider = ({ children }) => {
       pb.collection("years").getFullList()
       .then(years => {
           setYears(years)
+
+          if(!activeYear && years.length > 0) {
+            setActiveYear(years[0].id)
+          }
       })
       .catch(err => {
           console.error("Error getting years", err)

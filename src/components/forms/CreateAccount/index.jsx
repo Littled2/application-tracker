@@ -7,6 +7,8 @@ export function CreateAccount() {
 
     const { register } = usePocket()
 
+    const [ processing, setProcessing ] = useState(false)
+
     const [ email, setEmail ] = useState('')
     const [ password, setPassword ] = useState('')
     const [ passwordConfirm, setPasswordConfirm ] = useState('')
@@ -18,15 +20,18 @@ export function CreateAccount() {
     const submit = useCallback((e) => {
         e.preventDefault()
 
-        setErr(true)
+        setErr(false)
+        setProcessing(true)
 
         register(email, password, passwordConfirm)
         .then(res => {
             console.log(res)
+            setProcessing(false)
         })
         .catch(err => {
-            console.error("Error login in", err)
+            console.error("Error creating account in", err)
             setErr(true)
+            setProcessing(false)
         })
     }, [email, password, passwordConfirm, name, err])
 
@@ -63,7 +68,15 @@ export function CreateAccount() {
             }
 
             <div>
-                <button type="submit">Create Account</button>
+                <button type="submit">
+                {
+                    !processing ? (
+                        "Create Account"
+                    ) : (
+                        "Processing..."
+                    )
+                }    
+                </button>
             </div>
 
         </form>

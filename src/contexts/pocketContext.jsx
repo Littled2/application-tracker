@@ -29,17 +29,25 @@ export const PocketProvider = ({ children }) => {
 
     useEffect(() => {
         return pb.authStore.onChange((token, model) => {
-            console.log({token,model})
             setToken(token)
             setUser(model)
         })
     }, [])
 
     const register = useCallback(async (email, password, passwordConfirm) => {
-        await pb.collection("users")
+      return new Promise((res, rej) => {
+        pb.collection("users")
         .create({ email, password, passwordConfirm })
+        .then(() => {
+          pb.collection('users').authWithPassword(email, password)
+          .then(() => res(true))
+          .catch(err => rej(err))
+        })
+        .catch(err => {
+          rej(err)
+        })
 
-        return await pb.collection('users').authWithPassword(email, password)
+      })
     }, [])
 
     const login = useCallback(async (email, password) => {
@@ -49,6 +57,7 @@ export const PocketProvider = ({ children }) => {
     const logout = useCallback(() => {
         window.localStorage.clear()
         pb.authStore.clear()
+
     }, [])
 
 
