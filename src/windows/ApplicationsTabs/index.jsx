@@ -17,18 +17,40 @@ export function ApplicationsTabs({ counter, setOpenAppID }) {
     const [ acceptedDeclined, setAcceptedDeclined ] = useState(0)
 
     useEffect(() => {
-        pb.collection("stageBreakdown").getFullList()
+        pb.collection("stageBreakdown").getFullList({ filter: `year = "${activeYear}"` })
         .then(totals => {
 
-            let temp = {}
+            let idea = 0
+            
+            if(totals.filter(t => t.stage === "idea").length > 0) {
+                idea = totals.filter(t => t.stage === "idea")[0].count
+            }
 
-            totals.forEach(row => {
-                temp[row.year + "_" + row.stage] = row.count
-            })
+            let applying = 0
+            if(totals.filter(t => t.stage === "applying").length > 0) {
+                applying = totals.filter(t => t.stage === "applying")[0].count
+            }
 
-            setIdeaApplying(temp[activeYear + "_" + "idea"] + temp[activeYear + "_" + "applying"])
-            setApplied(temp[activeYear + "_" + "applied"])
-            setAcceptedDeclined(temp[activeYear + "_" + "accepted"] + temp[activeYear + "_" + "declined"])
+            let applied = 0
+            if(totals.filter(t => t.stage === "applied").length > 0) {
+                applied = totals.filter(t => t.stage === "applied")[0].count
+            }
+
+            let accepted = 0
+            if(totals.filter(t => t.stage === "accepted").length > 0) {
+                accepted = totals.filter(t => t.stage === "accepted")[0].count
+            }
+
+            let declined = 0
+            if(totals.filter(t => t.stage === "declined").length > 0) {
+                declined = totals.filter(t => t.stage === "declined")[0].count
+            }
+
+
+
+            setIdeaApplying(idea + applying)
+            setApplied(applied)
+            setAcceptedDeclined(accepted + declined)
         })
         .catch(err => console.error("Error getting total types by year", err))
     }, [ activeYear, counter ])
