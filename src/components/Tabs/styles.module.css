@@ -16,3 +16,12 @@
     background-color: var(--light-grey-selected);
     color: black;
 }
+
+@media screen and (max-width: 800px) {
+    .tabs {
+        width: min-content;
+    }
+    .tab {
+        clip-path: none;
+    }
+}

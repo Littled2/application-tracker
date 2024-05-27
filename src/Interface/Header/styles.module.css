@@ -24,3 +24,9 @@
 .selected {
     background-color: var(--light-grey) !important;
 }
+
+@media screen and (max-width: 800px) {
+    .header * {
+        font-size: 8px;
+    }
+}
