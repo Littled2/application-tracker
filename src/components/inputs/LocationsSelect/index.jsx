@@ -3,24 +3,20 @@ import styles from "./styles.module.css"
 import { useEffect, useState } from "react"
 import { usePocket } from "../../../contexts/pocketContext"
 
-export function LocationsSelect({ locations, setLocations }) {
+export function LocationsSelect({ locations, setLocations, c }) {
 
     const { pb } = usePocket()
 
     const [ allLocations, setAllLocations ] = useState([])
 
     useEffect(() => {
-        pb.collection("locations").getFullList()
+        pb.collection("locations").getFullList({ sort: "name"})
         .then(locs => setAllLocations(locs))
         .catch(err => console.error("Error getting locations", err))
-    }, [])
+    }, [c])
 
     const getLoc = (id) => {
         return allLocations.filter(l => l.id === id)[0]
-    }
-
-    const addLoc = (id) => {
-
     }
 
     const removeLoc = (locID) => {

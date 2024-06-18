@@ -8,6 +8,7 @@ import { DateInput } from "../../inputs/DateInput";
 import { LocationsSelect } from "../../inputs/LocationsSelect";
 import { NewOrganisation } from "../NewOrganisation";
 import { Popup } from "../../Popup";
+import { NewLocation } from "../NewLocation";
 
 export function NewApp({ setTrigger, setCounter }) {
     const [ orgID, setOrgID ] = useState('')
@@ -22,6 +23,7 @@ export function NewApp({ setTrigger, setCounter }) {
     const [ stage, setStage ] = useState('idea')
 
     const [ newOrgOpen, setNewOrgOpen ] = useState(false)
+    const [ newLocOpen, setNewLocOpen ] = useState(false)
 
     const { activeYear } = useActiveYear()
 
@@ -127,11 +129,18 @@ export function NewApp({ setTrigger, setCounter }) {
                     </div>
                 </div>
                 <div>
-                    <div>
-                        <label>Location(s) (comma separated)</label>
+                    <div style={{ display:"flex", justifyContent:"space-between" }}>
+                        <label>Location(s)</label>
+                        <small className="underline cursor-pointer" onClick={() => setNewLocOpen(true)}>
+                            <BiPlus />
+                            <span>New Location</span>
+                        </small>
                     </div>
-                    <LocationsSelect locations={locations} setLocations={setLocations} />
+                    <LocationsSelect locations={locations} setLocations={setLocations} c={c} />
                 </div>
+
+
+
                 <div>
                     <div>
                         <label>Application Type</label>
@@ -152,6 +161,10 @@ export function NewApp({ setTrigger, setCounter }) {
 
             <Popup title={"Create Organisation"} trigger={newOrgOpen} setTrigger={setNewOrgOpen}>
                 <NewOrganisation setSelectedOrgID={setOrgID} setTrigger={setNewOrgOpen} sc={sc} />
+            </Popup>
+
+            <Popup title={"Create Organisation"} trigger={newLocOpen} setTrigger={setNewLocOpen}>
+                <NewLocation setLocations={setLocations} setTrigger={setNewLocOpen} sc={sc} />
             </Popup>
         </>
     )
