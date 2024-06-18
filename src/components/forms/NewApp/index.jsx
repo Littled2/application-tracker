@@ -131,7 +131,6 @@ export function NewApp({ setTrigger, setCounter }) {
                         <label>Location(s) (comma separated)</label>
                     </div>
                     <LocationsSelect locations={locations} setLocations={setLocations} />
-                    {/* <input type="text" value={locations} onInput={e => setLocations(e.target.value)}/> */}
                 </div>
                 <div>
                     <div>
@@ -141,6 +140,7 @@ export function NewApp({ setTrigger, setCounter }) {
                         <option>Please Select</option>
                         <option value="placement">Placement</option>
                         <option value="internship">Internship</option>
+                        <option value="masters">Masters</option>
                         <option value="other">Other</option>
                     </select>
                 </div>
