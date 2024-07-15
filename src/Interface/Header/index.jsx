@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Popup } from "../../components/Popup";
 import { NewApp } from "../../components/forms/NewApp";
 import { IoTicketOutline } from "react-icons/io5"
@@ -25,6 +25,25 @@ export function Header({ counter, setCounter }) {
 
     const { activeYear, setActiveYear, years } = useActiveYear()
 
+    const handleKeyPress = useCallback(e => {
+        if(e.ctrlKey && e.key === "b") {
+            e.preventDefault()
+            e.stopPropagation()
+            
+            setNewAppOpen(true)
+        }
+    }, [])
+
+    useEffect(() => {
+        // attach the event listener
+        document.addEventListener('keydown', handleKeyPress)
+
+        // remove the event listener
+        return () => {
+            document.removeEventListener('keydown', handleKeyPress)
+        }
+    }, [handleKeyPress])
+
 
     return (
         <>
@@ -44,7 +63,14 @@ export function Header({ counter, setCounter }) {
                             years.length > 0 ? (
                                 <>
                                     <div>
-                                        <button onClick={() => setNewAppOpen(true)}>New Application +</button>
+                                        <button className={styles.newBtn} onClick={() => setNewAppOpen(true)}>
+                                            <span>+ New Application</span>
+                                            <span className={styles.keyIndicators}>
+                                                <span>ctrl</span>
+                                                +
+                                                <span>b</span>    
+                                            </span>
+                                        </button>
                                     </div>
 
                                     <div className={styles.years}>

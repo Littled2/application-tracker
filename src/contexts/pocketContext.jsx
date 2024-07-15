@@ -1,3 +1,5 @@
+'use client'
+
 import {
     createContext,
     useContext,
@@ -5,76 +7,103 @@ import {
     useState,
     useEffect,
     useMemo,
-} from "react"
-import PocketBase from "pocketbase"
-import { useInterval } from "usehooks-ts"
-import {jwtDecode} from "jwt-decode"
-import ms from "ms"
+} from "react";
+import PocketBase from "pocketbase";
+import { useInterval } from "usehooks-ts";
+import {jwtDecode} from "jwt-decode";
+import ms from "ms";
 
-const BASE_URL = "http://127.0.0.1:8090"
+// const BASE_URL = "http://127.0.0.1:8090";
+const BASE_URL = "http://localhost:8090";
+// const BASE_URL = "http://192.168.1.169:8090";
+// const BASE_URL = "http://192.168.1.196:8090";
+// const BASE_URL = "http://192.168.43.9:8090"
 
-const fiveMinutesInMs = ms("5 minutes")
-const twoMinutesInMs = ms("2 minutes")
+const fiveMinutesInMs = ms("5 minutes");
+const twoMinutesInMs = ms("2 minutes");
 
-const PocketContext = createContext({})
+const PocketContext = createContext({});
+
+
 
 
 export const PocketProvider = ({ children }) => {
 
     const pb = useMemo(() => new PocketBase(BASE_URL), [])
     
-    const [ token, setToken ] = useState(pb.authStore.token)
-    const [ user, setUser ] = useState(pb.authStore.model)
+    const [token, setToken] = useState(pb.authStore.token)
+    const [user, setUser] = useState(pb.authStore.model)
 
 
     useEffect(() => {
-        return pb.authStore.onChange((token, model) => {
-            setToken(token)
-            setUser(model)
-        })
-    }, [])
-
-    const register = useCallback(async (email, password, passwordConfirm) => {
-      return new Promise((res, rej) => {
-        pb.collection("users")
-        .create({ email, password, passwordConfirm })
-        .then(() => {
-          pb.collection('users').authWithPassword(email, password)
-          .then(() => res(true))
-          .catch(err => rej(err))
-        })
-        .catch(err => {
-          rej(err)
-        })
-
+      
+      return pb.authStore.onChange((token, model) => {
+        setToken(token)
+        setUser(model)
       })
+
     }, [])
+
+    useEffect(() => {
+
+      if(!user) {
+        pb.collection("users").unsubscribe()
+        return
+      }
+
+      pb.collection("users").subscribe(user.id, e => {
+        console.log("User record changed", user)
+        setUser(e.record)
+      })
+
+      return () => pb.collection("users").unsubscribe()
+
+    }, [ user ])
+
 
     const login = useCallback(async (email, password) => {
-        return await pb.collection("users").authWithPassword(email, password)
+        return await pb.collection("users").authWithPassword(email, password);
+    }, [])
+    
+    const register = useCallback(async (email, password, firstName, lastName) => {
+      return new Promise(((res, rej) => {
+        pb.collection("users").create({ email, password, passwordConfirm: password, firstName, lastName })
+        .then(() => {
+          login(email, password)
+          .then(() => {
+            res()
+          })
+          .catch(err => {
+            console.error("Error logging in after creating user", err)
+            rej(err)
+          })
+        })
+        .catch(err => {
+          console.error("Error creating user", err)
+          rej(err)
+        })
+      }))
     }, [])
 
     const logout = useCallback(() => {
-        window.localStorage.clear()
         pb.authStore.clear()
-
     }, [])
 
 
     const refreshSession = useCallback(async () => {
         if (!pb.authStore.isValid) return
 
-        const decoded = jwtDecode(token)
-        const tokenExpiration = decoded.exp
-        const expirationWithBuffer = (decoded.exp + fiveMinutesInMs) / 1000
+        const decoded = jwtDecode(token);
+        const tokenExpiration = decoded.exp;
+        const expirationWithBuffer = (decoded.exp + fiveMinutesInMs) / 1000;
         if (tokenExpiration < expirationWithBuffer) {
-            await pb.collection("users").authRefresh()
+            await pb.collection("users").authRefresh();
         }
-    }, [token])
+    }, [token]);
 
-    pb.autoCancellation(false)
+    pb.autoCancellation(false);
     
-    useInterval(refreshSession, token ? twoMinutesInMs : null)
+    useInterval(refreshSession, token ? twoMinutesInMs : null);
 
     return (
         <PocketContext.Provider
@@ -82,10 +111,10 @@ export const PocketProvider = ({ children }) => {
         >
           {children}
         </PocketContext.Provider>
-      )
+      );
 }
 
 
-export const usePocket = () => useContext(PocketContext)
+export const usePocket = () => useContext(PocketContext);
 
 

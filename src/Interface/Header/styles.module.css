@@ -25,6 +25,25 @@
     background-color: var(--light-grey) !important;
 }
 
+.newBtn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.keyIndicators {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    font-size: 0.6rem;
+}
+
+.keyIndicators > span {
+    padding: 2px 4px;
+    border-radius: 1000px;
+    background-color: rgba(100, 100, 100, 0.5);
+}
+
 @media screen and (max-width: 800px) {
     .header * {
         font-size: 8px;

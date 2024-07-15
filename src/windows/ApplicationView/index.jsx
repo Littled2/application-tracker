@@ -69,8 +69,6 @@ export function ApplicationView({ openAppID, setOpenAppID, counter, setCounter }
 
                 <button className={styles.close} onClick={() => setConfirmOpen(true)}>
                     <AiOutlineDelete />
-
-                    <Confirm message={"Are you sure you want to delete this application?"} trigger={confirmOpen} setTrigger={setConfirmOpen} onConfirm={deleteApplication} />
                 </button>
 
                 <button className={styles.close} onClick={() => setOpenAppID(null)}>
@@ -151,16 +149,14 @@ export function ApplicationView({ openAppID, setOpenAppID, counter, setCounter }
                                 </table>
                             </div>
 
-
-                            {/* <div className="flex gap-s">
-                                {
-                                    linkText !== "" ? (
-                                        <LinkView linkText={"Hello"} link={"df"} />
-                                    ) : (
-                                        <></>
-                                    )
-                                }
-                            </div> */}
+                            {
+                                application?.link && (
+                                    <div>
+                                        <p className="text-white">Link</p>
+                                        <a className={styles.link} rel="noreferrer" target="_blank" href={application?.link}>{application?.link}</a>
+                                    </div>
+                                )
+                            }
         
                             <div>
                                 <p className="text-white">Info</p>
@@ -195,6 +191,9 @@ export function ApplicationView({ openAppID, setOpenAppID, counter, setCounter }
                 }
 
             </div>
+
+            <Confirm message={"Are you sure you want to delete this application?"} trigger={confirmOpen} setTrigger={setConfirmOpen} onConfirm={deleteApplication} />
+
         </section>
     )
 }

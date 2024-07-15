@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { AcceptedDeclined } from "../../components/ApplicationsList/AcceptedDeclined"
 import { Tabs } from "../../components/Tabs"
 import { ApplicationView } from "../../windows/ApplicationView"
