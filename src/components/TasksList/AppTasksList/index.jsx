@@ -95,7 +95,7 @@ export function AppTasksList({ appID, counter, setCounter }) {
             </table>
 
 
-            <Popup title="Task View" trigger={popupOpen} setTrigger={setPopupOpen}>
+            <Popup title="Task View" trigger={popupOpen} setTrigger={setPopupOpen} onDelete={() => pb.collection("tasks").delete(selectedTask?.id)}>
                 {
                     selectedTask !== null ? (
                         <TaskView task={selectedTask} setTrigger={setPopupOpen} counter={counter} setCounter={setCounter} />

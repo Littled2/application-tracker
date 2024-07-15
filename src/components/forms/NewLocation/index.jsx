@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { usePocket } from "../../../contexts/pocketContext"
 
 export function NewLocation({ setTrigger, setLocations, sc }) {
@@ -6,6 +6,10 @@ export function NewLocation({ setTrigger, setLocations, sc }) {
     const { pb, user } = usePocket()
 
     const [ name, setName ] = useState('')
+
+    const newInput = useRef()
+
+    useEffect(() => newInput.current.focus(), [])
 
     const submit = e => {
         e.preventDefault()
@@ -31,7 +35,7 @@ export function NewLocation({ setTrigger, setLocations, sc }) {
                 <label>Location</label>
             </div>
             <div>
-                <input value={name} onChange={e => setName(e.target.value)} type="text" />
+                <input ref={newInput} value={name} onChange={e => setName(e.target.value)} type="text" />
             </div>
 
             <br />
