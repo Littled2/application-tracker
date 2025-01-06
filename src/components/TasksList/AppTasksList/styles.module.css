@@ -1,0 +1,19 @@
+.newTask {
+    color: var(--text-white);
+    /* font-weight: 600; */
+    background-color: var(--dark-grey);
+    display: flex;
+    gap: 6px;
+}
+.keyIndicators {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    font-size: 0.6rem;
+}
+
+.keyIndicators > span {
+    padding: 2px 4px;
+    border-radius: 1000px;
+    background-color: rgba(100, 100, 100, 0.5);
+}

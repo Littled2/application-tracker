@@ -26,6 +26,10 @@
     color: var(--text-green);
 }
 
+.text-grey {
+    color: grey;
+}
+
 .header-row {
     background-color: var(--primary-colour);
 }
@@ -120,9 +124,6 @@
 
 
 
-.m-hide {
-    display: unset;
-}
 
 .m-show-flex,
 .m-show-block {
@@ -132,7 +133,7 @@
 /* Mobile responsive styles */
 @media screen and (max-width: 800px) {
     .m-hide {
-        display: none;
+        display: none !important;
     }
     .m-show-flex {
         display: flex !important;
@@ -142,5 +143,9 @@
     }
     .button {
         width: unset;
+    }
+    .m-flex-col,
+    .m-col {
+        flex-direction: column;
     }
 }

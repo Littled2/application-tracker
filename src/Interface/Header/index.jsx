@@ -6,31 +6,30 @@ import { NewTicket } from "../../components/forms/NewTicket";
 import { FiMoon } from "react-icons/fi"
 import { BsPerson, BsSun } from "react-icons/bs"
 import { Account } from "../../components/Account";
-import { BiPlus } from "react-icons/bi";
 import styles from "./styles.module.css"
 import { usePocket } from "../../contexts/pocketContext";
 import { NewYears } from "../../components/forms/NewYears";
 import { useActiveYear } from "../../contexts/activeYearContext";
+import { useNewApplicationPopup } from "../../contexts/newApplicationPopupContext";
+import { Groups } from "../../components/Groups";
 
-export function Header({ counter, setCounter }) {
+export function Header() {
 
     const { pb, user } = usePocket()
 
-    const [ newAppOpen, setNewAppOpen ] = useState(false)
+    const { newApplicationPopupOpen, setNewApplicationPopupOpen} = useNewApplicationPopup()
+
     const [ newTicketOpen, setNewTicketOpen ] = useState(false)
     const [ accountOpen, setAccountOpen ] = useState(false)
-    const [ newYearOpen, setNewYearOpen ] = useState(false)
 
-    const [ lightTheme, setLightTheme ] = useState(false)
-
-    const { activeYear, setActiveYear, years } = useActiveYear()
+    const { years, setActiveYear, activeYear } = useActiveYear()
 
     const handleKeyPress = useCallback(e => {
         if(e.ctrlKey && e.key === "b") {
             e.preventDefault()
             e.stopPropagation()
             
-            setNewAppOpen(true)
+            setNewApplicationPopupOpen(true)
         }
     }, [])
 
@@ -47,25 +46,27 @@ export function Header({ counter, setCounter }) {
 
     return (
         <>
-
-            {
-                lightTheme ? (
-                    <link rel="stylesheet" href="/light-theme.css" />
-                ) : (
-                    <></>
-                )
-            }
-
             <div className={styles.header}>
                 <header className="flex gap-s align-center space-between">
                     {
                         user ? (
                             years.length > 0 ? (
                                 <>
+
+                                    <div className={[ "m-show-block", styles.mobileGroupsSelect ].join(" ")}>
+                                        <select onInput={e => setActiveYear(e.target.value)}>
+                                            {
+                                                years.map(year => {
+                                                    return <option key={'_dd_' + year.id} selected={activeYear === year.id} value={year.id}>{year.year}</option>
+                                                })
+                                            }
+                                        </select>
+                                    </div>
+
                                     <div>
-                                        <button className={styles.newBtn} onClick={() => setNewAppOpen(true)}>
+                                        <button className={styles.newAppButton} onClick={() => setNewApplicationPopupOpen(true)}>
                                             <span>+ New Application</span>
-                                            <span className={styles.keyIndicators}>
+                                            <span className={[ styles.keyIndicators, 'windows-only' ].join(' ')}>
                                                 <span>ctrl</span>
                                                 +
                                                 <span>b</span>    
@@ -73,21 +74,16 @@ export function Header({ counter, setCounter }) {
                                         </button>
                                     </div>
 
-                                    <div className={styles.years}>
-                                        {
-                                            years.map((y, i) => {
-                                                return (
-                                                    <button className={y.id === activeYear ? styles.selected : ""} key={i} onClick={() => setActiveYear(y.id)}>{y?.year}</button>
-                                                )
-                                            })
-                                        }
-
-                                        <button onClick={() => setNewYearOpen(true)}><BiPlus /></button>
+                                    <div className="m-hide">
+                                        <Groups groups={years} />
                                     </div>
 
-                                    <div>
-                                        <button onClick={() => setNewTicketOpen(true)}><IoTicketOutline/></button>
-                                        <button onClick={() => setLightTheme(!lightTheme)}>
+                                    <div className="flex">
+                                        <button className="m-hide" onClick={() => setNewTicketOpen(true)}>
+                                            <IoTicketOutline/>
+                                            <span>Contact support</span>
+                                        </button>
+                                        {/* <button onClick={() => setLightTheme(!lightTheme)}>
                                             {
                                                 !lightTheme ? (
                                                     <FiMoon />
@@ -95,7 +91,7 @@ export function Header({ counter, setCounter }) {
                                                     <BsSun />
                                                 )
                                             }
-                                        </button>
+                                        </button> */}
                                         <button onClick={() => setAccountOpen(true)}>
                                             <BsPerson />
                                         </button>
@@ -116,23 +112,14 @@ export function Header({ counter, setCounter }) {
                 </header>
             </div>
 
-
-
-            <Popup title={"New Application"} trigger={newAppOpen} setTrigger={setNewAppOpen}>
-                <NewApp setTrigger={setNewAppOpen} counter={counter} setCounter={setCounter} />
-            </Popup>
-
-            <Popup title={"New Ticket"} trigger={newTicketOpen} setTrigger={setNewTicketOpen}>
+            <Popup title={"Contact Support"} trigger={newTicketOpen} setTrigger={setNewTicketOpen}>
                 <NewTicket setTrigger={setNewTicketOpen} />
             </Popup>
 
-            <Popup title={"Account"} trigger={accountOpen} setTrigger={setAccountOpen}>
+            <Popup title={"Your Account"} trigger={accountOpen} setTrigger={setAccountOpen}>
                 <Account setTrigger={setAccountOpen} />
             </Popup>
 
-            <Popup title={"New Year"} trigger={newYearOpen} setTrigger={setNewYearOpen}>
-                <NewYears setTrigger={setNewYearOpen} />
-            </Popup>
         </>
     )
 }

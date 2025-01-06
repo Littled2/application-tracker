@@ -5,17 +5,30 @@ import { NewTask } from "../../components/forms/NewTask"
 import { LiaEdit } from "react-icons/lia"
 import { EditApp } from "../../components/forms/EditApp"
 import { AppTasksList } from "../../components/TasksList/AppTasksList"
-import { AiOutlineClose, AiOutlineDelete } from "react-icons/ai"
+import { AiFillEdit, AiOutlineClose, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai"
 import { usePocket } from "../../contexts/pocketContext"
 import { getDate } from "../../helpers/dates"
 import { DocumentUploadDownload } from "./DocumentUploadDownload"
 import { useActiveYear } from "../../contexts/activeYearContext"
 import { Confirm } from "../../components/forms/Confirm"
+import { BiPen, BiPencil } from "react-icons/bi"
+import { usePopupsContext } from "../../contexts/popupsContext"
 
 export function ApplicationView({ openAppID, setOpenAppID, counter, setCounter }) {
 
+    const { setPopups } = usePopupsContext()
+
+    useEffect(() => {
+        if(openAppID) {
+            setPopups(p => [ ...p, setOpenAppID ])
+        } else {
+            setPopups(prev => prev.filter(item => item !== setOpenAppID))
+        }
+    }, [ openAppID ])
+
     const [ application, setApplication ] = useState({})
     const [ err, setErr ] = useState(false)
+    const [ loading, setLoading ] = useState(true)
 
     const [ newTaskOpen, setNewTaskOpen ] = useState()
     const [ editAppOpen, setEditAppOpen ] = useState()
@@ -25,13 +38,13 @@ export function ApplicationView({ openAppID, setOpenAppID, counter, setCounter }
 
     const { pb } = usePocket()
 
+
     useEffect(() => {
 
         if(!openAppID) return
 
-        pb.collection("applications").subscribe(openAppID, e => {
-            setApplication(e.record)
-        }, { expand:"locations, organisation" })
+        setLoading(true)
+
 
         pb.collection("applications").getOne(openAppID, { expand:"locations, organisation" })
         .then(app => {
@@ -43,13 +56,28 @@ export function ApplicationView({ openAppID, setOpenAppID, counter, setCounter }
 
             setApplication(app)
             setCounter(c => c + 1)
+            setLoading(false)
         })
         .catch(err => {
             console.error("Error getting application", err)
             setErr(true)
+            setLoading(false)
         })
 
-    }, [ openAppID, editAppOpen, activeYear ])
+
+
+        pb.collection("applications").subscribe("*", e => {
+            console.log("LIVE Changes", e)
+            setApplication(e.record)
+        }, { expand:"locations, organisation" })
+
+        return () => {
+            pb.collection('applications').unsubscribe()
+        }
+        
+    }, [ openAppID, activeYear ])
+
+
 
     const deleteApplication = useCallback(() => {
         pb.collection('applications').delete(openAppID)
@@ -62,14 +90,38 @@ export function ApplicationView({ openAppID, setOpenAppID, counter, setCounter }
         })
     }, [ pb, openAppID ])
 
+    const handleKeyPress = useCallback(e => {
+        if(e.ctrlKey && e.key === "q") {
+            e.preventDefault()
+            e.stopPropagation()
+            
+            setNewTaskOpen(true)
+        }
+    }, [])
+
+    useEffect(() => {
+        // attach the event listener
+        document.addEventListener('keydown', handleKeyPress)
+
+        // remove the event listener
+        return () => {
+            document.removeEventListener('keydown', handleKeyPress)
+        }
+    }, [handleKeyPress])
+
 
     return (
         <section className={styles.window}>
             <div className={styles.topBar}>
 
-                <button className={styles.close} onClick={() => setConfirmOpen(true)}>
-                    <AiOutlineDelete />
-                </button>
+                <div className="flex">
+                    <button className={styles.close} onClick={() => setConfirmOpen(true)}>
+                        <AiOutlineDelete />
+                    </button>
+                    <button className={styles.close} onClick={() => setEditAppOpen(true)}>
+                        <AiOutlineEdit />
+                    </button>
+                </div>
 
                 <button className={styles.close} onClick={() => setOpenAppID(null)}>
                     <AiOutlineClose />
@@ -79,111 +131,118 @@ export function ApplicationView({ openAppID, setOpenAppID, counter, setCounter }
             <div className={styles.inner}>
                 {
                     !err ? (
-                        <div className="flex col gap-s">
+                        !loading ? (
+                            <div className="flex col gap-s">
 
-                            <div>
-                                <h4 className="text-white flex align-center gap-s">
-                                    <span onClick={() => setEditAppOpen(true)}><LiaEdit /></span>
-                                    {application?.role}
-                                </h4>
-                                <hr/>
-                            </div>
-                            
-                            <Popup title={"Edit Application"} trigger={editAppOpen} setTrigger={setEditAppOpen}>
-                                <EditApp setTrigger={setEditAppOpen} app={application}/>
-                            </Popup>
-        
-                            <div className="flex gap-s">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td className="text-white">Company</td>
-                                            <td>{application?.expand?.organisation?.name}</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-white">Location(s)</td>
-                                            <td>
-                                                {
-                                                    application?.expand?.locations?.map((loc, i) => <span key={i}>{loc?.name}{i < application?.expand?.locations.length - 1 ? ", " : ""}</span>)
-                                                }
-                                            </td>
-                                        </tr>
-                                        <tr><td><br /></td></tr>
-                                        <tr>
-                                            <td className="text-white">CV</td>
-                                            <td>
-                                                <DocumentUploadDownload application={application} fileKeyName={"cv"} />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td className="text-white">Deadline Type</td>
-                                            <td>{application?.deadlineType ? application?.deadlineType : "-"}</td>
-                                        </tr>
-                                        <tr>
-                                            {
-                                                application?.deadlineType === "fixed" ? (
-                                                    <>
-                                                        <td className="text-white">Deadline</td>
-                                                        <td>{application?.deadline ? getDate(application?.deadline) : "-"}</td>       
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <td><br /></td>
-                                                        <td><br /></td>
-                                                    </>
-                                                )
-                                            }
-                                        </tr>
-                                        <tr><td><br /></td></tr>
-                                        <tr>
-                                            <td className="text-white">Cover Letter</td>
-                                            <td>
-                                                <DocumentUploadDownload application={application} fileKeyName={"coverLetter"} />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            {
-                                application?.link && (
-                                    <div>
-                                        <p className="text-white">Link</p>
-                                        <a className={styles.link} rel="noreferrer" target="_blank" href={application?.link}>{application?.link}</a>
-                                    </div>
-                                )
-                            }
-        
-                            <div>
-                                <p className="text-white">Info</p>
-                                <pre style={{fontFamily:"inherit", whiteSpace:"pre-wrap", wordWrap:"break-word", margin:"0" }}>{application?.info}</pre>
-                            </div>
-        
-                            <div>
                                 <div>
-                                    <h4 className="text-white">Tasks</h4>
+                                    <h4 className="text-white flex align-center gap-s">
+                                        <span className="cursor-pointer" onClick={() => setEditAppOpen(true)}><BiPencil /></span>
+                                        {application?.role}
+                                    </h4>
                                     <hr/>
                                 </div>
-                                <div className="flex col gap-s">
-                                    
-                                    <AppTasksList counter={counter} setCounter={setCounter} appID={application.id} />
 
-                                    <div>
-                                        <button className={styles.newTask} onClick={() => setNewTaskOpen(true)}>Add Task +</button>
+                                <Popup title={"Edit Application"} trigger={editAppOpen} setTrigger={setEditAppOpen}>
+                                    <EditApp setTrigger={setEditAppOpen} app={application}/>
+                                </Popup>
 
-                                        <Popup title={"Create Task"} trigger={newTaskOpen} setTrigger={setNewTaskOpen}>
-                                            <NewTask appID={application.id} counter={counter} setCounter={setCounter} setTrigger={setNewTaskOpen} />
-                                        </Popup>
-                                    </div>
+                                <div className="flex gap-s m-flex-col">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td className="text-white">Company</td>
+                                                <td>{application?.expand?.organisation?.name}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="text-white">Location(s)</td>
+                                                <td>
+                                                    {
+                                                        application?.expand?.locations?.map((loc, i) => <span key={i}>{loc?.name}{i < application?.expand?.locations.length - 1 ? ", " : ""}</span>)
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td className="text-white">Deadline Type</td>
+                                                <td>{application?.deadlineType ? application?.deadlineType : "-"}</td>
+                                            </tr>
+                                            <tr>
+                                                {
+                                                    application?.deadlineType === "fixed" ? (
+                                                        <>
+                                                            <td className="text-white">Deadline</td>
+                                                            <td>{application?.deadline ? getDate(application?.deadline) : "-"}</td>       
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <td><br /></td>
+                                                            <td><br /></td>
+                                                        </>
+                                                    )
+                                                }
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </div>
 
-                        </div>
-    
+                                <div className="flex gap-s m-flex-col">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td className="text-white">CV</td>
+                                                <td>
+                                                    <DocumentUploadDownload application={application} fileKeyName={"cv"} />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td className="text-white">Cover Letter</td>
+                                                <td>
+                                                    <DocumentUploadDownload application={application} fileKeyName={"coverLetter"} />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                {
+                                    application?.link && (
+                                        <div>
+                                            <p className="text-white">Link</p>
+                                            <a className={styles.link} rel="noreferrer" target="_blank" href={application?.link}>{application?.link}</a>
+                                        </div>
+                                    )
+                                }
+
+                                <div>
+                                    <div className="flex space-between">
+                                        <p className="text-white">Info</p>
+                                        <span className="cursor-pointer text-white" onClick={() => setEditAppOpen(true)}><BiPencil /></span>
+                                    </div>
+                                    <pre style={{fontFamily:"inherit", whiteSpace:"pre-wrap", wordWrap:"break-word", margin:"0" }}>{application?.info}</pre>
+                                </div>
+
+                                <div>
+                                    <div>
+                                        <h4 className="text-white">Tasks</h4>
+                                        <hr/>
+                                    </div>
+
+                                    <AppTasksList counter={counter} setCounter={setCounter} application={application} />
+
+                                </div>
+
+                                </div>
+                        ) : (
+                            <p className="text-center text-grey">Loading...</p>
+                        )    
                     ) : (
                         <p className="text-red">Error</p>
                     )

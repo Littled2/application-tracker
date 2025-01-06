@@ -17,3 +17,31 @@
     flex-direction: column;
     gap: var(--spacing-small);
 }
+
+.labels {
+    display: flex;
+    gap: var(--spacing-small);
+    justify-content: center;
+}
+
+@media screen and (max-width: 800px) {
+    .wrapper {
+
+    }
+    .outer {
+        height: min-content;
+    }
+    .mobileHeading {
+        font-size: 1.4rem;
+        font-weight: 500;
+        max-width: 100%;
+    }
+    .chart {
+        max-height: unset;
+        max-width: 90vw;
+    }
+    .labels {
+        flex-wrap: wrap;
+        display: none;
+    }
+}

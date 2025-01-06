@@ -5,6 +5,7 @@
     padding: var(--spacing-small);
     border: 1.2px solid var(--border-colour);
     width: fit-content;
+    flex-direction: column;
 }
 
 .imageWrapper {
@@ -15,7 +16,6 @@
 
 .image {
     max-height: 100%;
-    /* margin: auto; */
 }
 
 .dotsWrapper {
@@ -35,4 +35,28 @@
 
     top: 10px;
     left: 10px;
+}
+
+.inner {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.innerWrapper {
+    display: flex;
+    height: 90%;
+    justify-content: center;
+    gap: var(--spacing-small);
+}
+
+@media screen and (max-width: 800px) {
+    .wrapper {
+        display: none;
+    }
 }

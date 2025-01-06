@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { usePocket } from "../../../contexts/pocketContext"
 import { DateInput } from "../../inputs/DateInput"
 
@@ -9,6 +9,9 @@ export function NewTask({ appID, setCounter, setTrigger }) {
 
     const { pb, user } = usePocket()
 
+    const taskInput = useRef()
+
+    
     function submit(e) {
         e.preventDefault()
 
@@ -29,13 +32,17 @@ export function NewTask({ appID, setCounter, setTrigger }) {
 
     }
 
+    useEffect(() => {
+        taskInput.current.focus()
+    }, [])
+
     return (
         <form className="form flex col gap-s" onSubmit={(e) => submit(e)}>
             <div>
                 <div>
                     <label>Task</label>
                 </div>
-                <input type="text" value={info} onChange={e => setInfo(e.target.value)} required />
+                <input placeholder="Eg. Request reference from tutor" ref={taskInput} type="text" value={info} onChange={e => setInfo(e.target.value)} required />
             </div>
             <div>
                 <div>
@@ -44,7 +51,7 @@ export function NewTask({ appID, setCounter, setTrigger }) {
                 <DateInput date={deadline} setDate={setDeadline} />
             </div>
             <div>
-                <button type="submit">Save</button>
+                <button type="submit">Create task</button>
             </div>
         </form>
     )

@@ -48,7 +48,7 @@ export function LocationsSelect({ locations, setLocations, c }) {
 
                 <select onChange={e => setLocations(l => [ ...l, e.target.value ])}>
                     {
-                        allLocations.map(location => {
+                        allLocations.filter(location => !locations.some((selected) => selected.id === location.id)).map(location => {
                             return (
                                 <option value={location.id}>{location.name}</option>
                             )

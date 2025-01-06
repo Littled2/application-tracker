@@ -76,7 +76,7 @@ export function EditApp({ app, setTrigger }) {
                         <label>Organisation</label>
                         <small className="underline cursor-pointer" onClick={() => setNewOrgOpen(true)}>
                             <BiPlus />
-                            <span>New Organisation</span>
+                            <span>Add Organisation</span>
                         </small>
                     </div>
                     <SelectOrganisation required selected={orgID} setSelected={setOrgID} c={c} />
@@ -108,6 +108,7 @@ export function EditApp({ app, setTrigger }) {
                         <select value={deadlineType} onInput={e => setDeadlineType(e.target.value)}>
                             <option value="rolling">Rolling</option>
                             <option value="fixed">Fixed</option>
+                            <option value="none">None</option>
                         </select>
                     </div>
                     <div>
@@ -137,8 +138,10 @@ export function EditApp({ app, setTrigger }) {
                         <label>Application Type</label>
                     </div>
                     <select required value={type} onInput={e => setType(e.target.value)}>
+                        <option>Please Select</option>
                         <option value="placement">Placement</option>
                         <option value="internship">Internship</option>
+                        <option value="masters">Masters</option>
                         <option value="other">Other</option>
                     </select>
                 </div>

@@ -1,0 +1,16 @@
+.file {
+    font-size: 1rem;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    text-decoration: underline;
+}
+
+.bin {
+    color: var(--border-colour);
+    cursor: pointer;
+}
+
+.bin:hover {
+    color: var(--text-orange);
+}

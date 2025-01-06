@@ -10,3 +10,28 @@
     flex-direction: column;
     gap: 1rem;
 }
+
+.deleteBtn {
+    background-color: var(--danger);
+    color: white;
+    border: var(--danger);
+}
+
+.selectedGroup {
+    background-color: var(--dark-grey);
+}
+
+.reOrderButton {
+    background-color: transparent;
+    border: none;
+    color: var(--text-white);
+}
+
+.reOrderButton:not(:disabled):hover {
+    color: var(--text-orange);
+}
+
+.reOrderButton:disabled {
+    color: var(--dark-grey);
+    cursor: not-allowed;
+}

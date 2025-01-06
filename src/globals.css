@@ -2,16 +2,24 @@
     --bg-colour: #000000;
 
     --dark-grey: #232323;
+
+    --dark-grey-hover: rgba(35, 35, 35, 0.5);
+
     --light-grey: #606060;
     --light-grey-selected: #c4c4c4;
     
     --accent-colour: #ff532c;
+
+    --danger: rgb(176, 17, 17);
 
     --text-white: #d6d6d6;
     --text-orange: #d28827;
     --text-blue: #187da8;
     --text-red: red;
     --text-green: green;
+
+    --late-bg: rgba(255, 0, 0, 0.25);
+    --almost-late-bg: rgba(253, 159, 82, 0.25);
 
     --page-padding-left: 14%;
     --page-padding-right: 14%;
@@ -20,17 +28,18 @@
 
     --spacing-small: 12px;
     --spacing-medium: 24px;
+    --spacing-large: 42px;
 
     --sans-font: Arial, 'Poppins', sans-serif;
     --mono-font: 'Roboto Mono', monospace;
 
-    --header-height: 1.8rem;
+    --header-height: 40px;
 
 }
 
 body {
     height: 100vh;
-    overflow-x: scroll;
+    /* overflow-x: scroll; */
 }
 
 header {
@@ -47,7 +56,7 @@ header button {
 }
 
 main {
-    height: calc(100vh - var(--header-height));
+    min-height: calc(100vh - var(--header-height));
 }
 
 table {
@@ -98,6 +107,7 @@ table th {
     font-family: inherit;
     padding: 4px;
     border: none;
+    max-width: 100%;
 }
 
 .form input[type=text] {
@@ -110,10 +120,24 @@ table th {
     width: 100%;
 }
 
+input:focus,
+textarea:focus,
+select:focus {
+    outline: 2px solid var(--text-orange);
+}
 
+
+
+.windows-only {
+    display: none; /* Hidden by default */
+}
+
+.windows-only.is-windows {
+    display: block; /* Visible only when the 'is-windows' class is added */
+}
 
 @media screen and (max-width: 800px) {
-    html {
-        font-size: 26px;
+    .windows-only {
+        display: none !important;
     }
 }

@@ -1,6 +1,14 @@
 .wrapper {
     padding: var(--spacing-small) var(--spacing-medium);
-    padding-top: calc(var(--spacing-medium) + 1rem);
+    padding-top: calc(var(--header-height) + 1rem);
+}
+
+.applicationsTasksWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-medium);
+    flex: 1;
+    max-width: 100%;
 }
 
 .asidePage {
@@ -9,7 +17,7 @@
 }
 
 .dataVisWrapper {
-    min-height: 300px;
+    height: 300px;
     display: flex;
     gap: var(--spacing-medium);
 }
@@ -26,34 +34,50 @@
 .tablesWrapper {
     display: flex;
     gap: var(--spacing-medium);
-    height: calc(100vh - 300px);
-}
-
-.noYearsWrapper {
-    padding: 24px;
-    padding-top: 12%;
-    max-width: 800px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+    /* height: calc(100vh - 300px); */
 }
 
 @media screen and (max-width: 800px) {
     .wrapper {
-        padding-left: 4px;
-        padding-right: 4px;
-        padding-bottom: 4px;
+        padding-left: 8px;
+        padding-right: 8px;
+        padding-bottom: 40vh;
+    }
+    .wrapper td {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        font-size: 1.2rem;
+    }
+    .applicationsTasksWrapper {
+        gap: var(--spacing-large);
+    }
+    .applicationsWrapper {
+        min-width: unset;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-small);
+    }
+    .applicationsWrapper > h3,
+    .tasksWrapper > h3 {
+        font-size: 1.5rem;
     }
     .dataVisWrapper {
-        display: none;
+        height: unset;
     }
     .tablesWrapper {
         flex-direction: column;
         height: unset;
+        gap: var(--spacing-large);
     }
     .tasksWrapper {
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-small);
+    }
+    .asidePage {
+        min-width: unset;
+        width: unset;
     }
 }
 

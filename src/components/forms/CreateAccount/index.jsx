@@ -20,8 +20,14 @@ export function CreateAccount() {
     const submit = useCallback((e) => {
         e.preventDefault()
 
-        setErr(false)
+        setErr(null)
         setProcessing(true)
+
+        if(password !== passwordConfirm) {
+            setErr("Passwords do not match")
+            setProcessing(false)
+            return
+        }
 
         register(email, password, passwordConfirm)
         .then(res => {
@@ -29,8 +35,8 @@ export function CreateAccount() {
             setProcessing(false)
         })
         .catch(err => {
-            console.error("Error creating account in", err)
-            setErr(true)
+            console.error("Error creating account in", {err})
+            setErr(err)
             setProcessing(false)
         })
     }, [email, password, passwordConfirm, name, err])
@@ -42,30 +48,55 @@ export function CreateAccount() {
                 <div>
                     <label>Email</label>
                 </div>
-                <input name="create-account-email" id="create-account-email" style={{ width: "100%" }} value={email} onChange={e => setEmail(e.target.value)} type="text" required />
+                <input name="create-account-email" id="create-account-email" style={{ width: "100%" }} value={email} onChange={e => setEmail(e.target.value)} type="email" required />
             </div>
 
             <div>
                 <div>
                     <label>Password</label>
                 </div>
-                <input name="create-account-password" id="create-account-password" style={{ width: "100%" }} value={password} onChange={e => setPassword(e.target.value)} type="password" required />
+                <input name="create-account-password" id="create-account-password" style={{ width: "100%" }} value={password} onChange={e => setPassword(e.target.value)} type="password" minLength={6} required />
             </div>
 
             <div>
                 <div>
                     <label>Confirm password</label>
                 </div>
-                <input name="create-account-password-confirm" id="create-account-password-confirm" style={{ width: "100%" }} value={passwordConfirm} onChange={e => setPasswordConfirm(e.target.value)} type="password" required />
+                <input name="create-account-password-confirm" id="create-account-password-confirm" style={{ width: "100%" }} value={passwordConfirm} onChange={e => setPasswordConfirm(e.target.value)} type="password" minLength={6} required />
             </div>
 
             {
                 err ? (
-                    <p>Something went wrong!</p>
+                    <p className="text-red">{err?.response?.message}</p>
                 ) : (
                     <></>
                 )
             }
+
+            {
+                err?.response?.data?.email?.message ? (
+                    <p className="text-red">{err?.response?.data?.email?.message}</p>
+                ) : (
+                    <></>
+                )
+            }
+
+            {
+                err?.response?.data?.password?.message ? (
+                    <p className="text-red">{err?.response?.data?.password?.message}</p>
+                ) : (
+                    <></>
+                )
+            }
+
+            {
+                err?.response?.data?.passwordConfirm?.message ? (
+                    <p className="text-red">{err?.response?.data?.passwordConfirm?.message}</p>
+                ) : (
+                    <></>
+                )
+            }
+               
 
             <div>
                 <button type="submit">

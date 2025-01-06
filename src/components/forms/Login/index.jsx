@@ -32,7 +32,7 @@ export function Login() {
                 setIncorrect(true)
                 setProcessing(false)
             } else {
-                setErr(true)
+                setErr(err?.response?.message)
                 setProcessing(false)
             }
         })
@@ -57,7 +57,7 @@ export function Login() {
 
             {
                 err ? (
-                    <p>Something went wrong!</p>
+                    <p className="text-red">{err}</p>
                 ) : (
                     <></>
                 )
@@ -65,7 +65,7 @@ export function Login() {
 
             {
                 incorrect ? (
-                    <p>Incorrect login details</p>
+                    <p className="text-red">Incorrect login details</p>
                 ) : (
                     <></>
                 )

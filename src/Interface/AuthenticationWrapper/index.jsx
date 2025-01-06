@@ -8,6 +8,8 @@ export function AuthenticationWrapper() {
     return(
         <div className={styles.wrapper}>
 
+            <img className={styles.logo} src="/exeter application tracker logo.png" />
+
             <Tabs tabs={[
                 {
                     name: "Login",

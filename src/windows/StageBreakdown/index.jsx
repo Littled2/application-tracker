@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Bar, Pie } from "react-chartjs-2";
 import { usePocket } from "../../contexts/pocketContext";
 import { useActiveYear } from "../../contexts/activeYearContext";
+import { useMasterCounter } from "../../contexts/masterCounterContext";
 
 
 
@@ -31,6 +32,8 @@ const barChartOptions = {
 
 export function StageBreakdown() {
 
+    const { masterCounter } = useMasterCounter()
+    
     const [ amounts, setAmounts ] = useState([ 0, 0, 0, 0, 0 ])
     const [ err, setErr ] = useState(false)
 
@@ -100,13 +103,13 @@ export function StageBreakdown() {
             console.error("Error getting stages breakdown", error)
             setErr(true)
         })
-    }, [activeYear])
+    }, [ activeYear, masterCounter ])
     
     return (
         <div className={styles.outer}>
             <div className={styles.wrapper}>
-                <div className="flex col gap-s">
-                    <b><small>Pre Final Apps by Stage</small></b>
+                <div className="flex col gap-s text-center m-hide">
+                    <b><small>Pre Final Stage Applications</small></b>
                     <div className={styles.chart}>
                         <Pie
                         options={{
@@ -115,6 +118,8 @@ export function StageBreakdown() {
                                     display: false
                                 }
                             },
+                            responsive: true,
+                            maintainAspectRatio: true
                         }}
                         data={
                             {
@@ -136,8 +141,8 @@ export function StageBreakdown() {
                         } />
                     </div>
                 </div>
-                <div className="flex col gap-s">
-                    <b><small>Apps by Stage</small></b>
+                <div className="flex col gap-s text-center">
+                    <b><small className={styles.mobileHeading}>Applications by Stage</small></b>
                     {
                         barChartData ? (
                             <div className={styles.chart}>
@@ -149,7 +154,7 @@ export function StageBreakdown() {
                     }
                 </div>
             </div>
-            <div className="flex gap-s justify-center">
+            <div className={styles.labels}>
                 <b style={{ padding: "0 4px", backgroundColor: "coral", color: "rgba(0,0,0,0.85)" }}><small>Idea</small></b>
                 <b style={{ padding: "0 4px", backgroundColor: "#bcb067", color: "rgba(0,0,0,0.85)" }}><small>Applying</small></b>
                 <b style={{ padding: "0 4px", backgroundColor: "lightblue", color: "rgba(0,0,0,0.85)" }}><small>Applied</small></b>

@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { usePocket } from "../../../contexts/pocketContext"
 
 export function NewTicket({ setTrigger }) {
@@ -27,6 +27,10 @@ export function NewTicket({ setTrigger }) {
         })
     }, [ pb, user, err, success ])
 
+    useEffect(() => {
+        ticketRef.current.focus()
+    }, [])
+
     return !success ? (
         <form className="form flex col gap-s" onSubmit={submit}>
 
@@ -36,7 +40,7 @@ export function NewTicket({ setTrigger }) {
                 <div>
                     <label>Engineering Ticket</label>
                 </div>
-                <input type="text" minLength={10} maxLength={300} ref={ticketRef} required />
+                <textarea minLength={10} maxLength={300} ref={ticketRef} placeholder="Eg. Please fix this" required></textarea>
             </div>
             {
                 err ? (

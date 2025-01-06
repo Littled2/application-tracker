@@ -1,4 +1,14 @@
-.org {
+.row {
+    animation: fadeIn 100ms forwards;
+    opacity: 0;
+}
+
+.row:not(.selected):hover {
+    background-color: var(--dark-grey-hover);
+}
+
+.org,
+.role {
     max-width: 60px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -7,4 +17,35 @@
 
 .dln {
     white-space: nowrap;
+}
+
+.selected {
+    /* color: var(--text-white); */
+}
+
+.selected td {
+    background-color: var(--dark-grey);
+    /* background-color: rgba(210, 136, 39, 0.2); */
+}
+
+.deadline {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.late {
+    background-color: var(--late-bg) !important;
+}
+
+.almostLate {
+    background-color: var(--almost-late-bg) !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0
+    }
+    to {
+        opacity: 1;
+    }
 }

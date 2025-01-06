@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import styles from "./styles.module.css"
 import { useActiveYear } from "../../contexts/activeYearContext"
 import { usePocket } from "../../contexts/pocketContext"
+import { useMasterCounter } from "../../contexts/masterCounterContext"
 
 export function NumbersOverview() {
 
@@ -10,6 +11,7 @@ export function NumbersOverview() {
 
     const { pb } = usePocket()
 
+    const { masterCounter } = useMasterCounter()
     const { activeYear } = useActiveYear()
 
     
@@ -39,7 +41,7 @@ export function NumbersOverview() {
             setErr(true)
         })
 
-    }, [activeYear])
+    }, [ activeYear, masterCounter ])
 
     
     return !err ? (

@@ -1,5 +1,3 @@
-'use client'
-
 import {
     createContext,
     useContext,
@@ -12,11 +10,12 @@ import PocketBase from "pocketbase";
 import { useInterval } from "usehooks-ts";
 import {jwtDecode} from "jwt-decode";
 import ms from "ms";
+import { AuthenticationWrapper } from "../Interface/AuthenticationWrapper";
 
 // const BASE_URL = "http://127.0.0.1:8090";
-const BASE_URL = "http://localhost:8090";
+// const BASE_URL = "http://localhost:8090";
 // const BASE_URL = "http://192.168.1.169:8090";
-// const BASE_URL = "http://192.168.1.196:8090";
+const BASE_URL = "http://192.168.1.196:8090";
 // const BASE_URL = "http://192.168.43.9:8090"
 
 const fiveMinutesInMs = ms("5 minutes");
@@ -85,6 +84,21 @@ export const PocketProvider = ({ children }) => {
       }))
     }, [])
 
+    const deleteUser = useCallback(async () => {
+      return new Promise(((res, rej) => {
+        console.log({user})
+        pb.collection("users").delete(user?.id)
+        .then(() => {
+          logout()
+          res()
+        })
+        .catch(err => {
+          console.error("Error deleting user", err)
+          rej(err)
+        })
+      }))
+    }, [])
+
     const logout = useCallback(() => {
         pb.authStore.clear()
     }, [])
@@ -107,9 +121,17 @@ export const PocketProvider = ({ children }) => {
 
     return (
         <PocketContext.Provider
-          value={{ register, login, logout, user, token, pb }}
+          value={{ register, login, logout, deleteUser, user, token, pb }}
         >
-          {children}
+          {
+            user ? (
+              <>
+                {children}
+              </>
+            ) : (
+              <AuthenticationWrapper />
+            )
+          }
         </PocketContext.Provider>
       );
 }

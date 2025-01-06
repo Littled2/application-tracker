@@ -28,90 +28,80 @@ export function Body({ counter, setCounter }) {
 
     const { activeYear } = useActiveYear()
 
-    return user ? (
-        years.length > 0 ? (
-            activeYear ? (
-                <main className={[ "flex gap-m", styles.wrapper ].join(' ')}>
+    return (
+        activeYear ? (
+            <main className={[ "flex gap-m", styles.wrapper ].join(' ')}>
 
-                    <div className="flex col gap-m flex-1">
-                        <div className={styles.dataVisWrapper}>
+                <div className={styles.applicationsTasksWrapper}>
+                    <div className={styles.dataVisWrapper}>
 
-                            <LocationView />
+                        <LocationView />
 
-                            <StageBreakdown />
+                        <StageBreakdown />
 
-                            {
-                                openAppID === null ? (
-                                    <NumbersOverview />
-                                ) : (
-                                    <></>
-                                )
-                            }
+                        {
+                            !openAppID ? (
+                                <NumbersOverview />
+                            ) : (
+                                <></>
+                            )
+                        }
 
-                            {/* {
-                                openAppID === null ? (
-                                    <DeadlinesBreakdown />
-                                ) : (
-                                    <></>
-                                )
-                            } */}
-
-                        </div>
-
-                        <div className={styles.tablesWrapper}>
-                            <div className={styles.applicationsWrapper} style={{ height: "calc(100vh - 300px)" }}>
-                                <ApplicationsTabs counter={counter} setOpenAppID={setOpenAppID}  />
-                            </div>
-
-                            {
-                                openAppID === null ? (
-                                    <div className={styles.tasksWrapper}>
-                                        <b>-</b>
-                                        <TodoTasks setOpenAppID={setOpenAppID} />
-                                    </div>
-                                ) : (
-                                    <></>
-                                )
-                            }
-                        </div>
-
-                        {/* <div>
-                            <div className={styles.opportunityWrapper}>
-
-                            </div>
-                            <h5>Opportunities Tracker</h5>
-                            <div className={styles.applicationsWrapper} style={{ height: "calc(100vh - 300px)" }}>
-                                <OpportunitiesTracker />
-                            </div>
-                        </div> */}
+                        {/* {
+                            openAppID === null ? (
+                                <DeadlinesBreakdown />
+                            ) : (
+                                <></>
+                            )
+                        } */}
 
                     </div>
 
-                    {
-                        openAppID !== null ? (
-                            <div className={styles.asidePage}>
-                                <ApplicationView counter={counter} setCounter={setCounter} openAppID={openAppID} setOpenAppID={setOpenAppID} />
-                            </div>
-                        ) : (
-                            <></>
-                        )
-                    }
+                    <div className={styles.tablesWrapper}>
+                        <div className={styles.applicationsWrapper} style={{ height: "calc(100vh - 300px)" }}>
+                            <h3 className="m-show-block">Your Applications</h3>
+                            <ApplicationsTabs setOpenAppID={setOpenAppID} openAppID={openAppID} />
+                        </div>
 
-                </main>
-            ) : (
-                <p style={{ textAlign: "center", marginTop: "12%" }}>Please select an application 'year' group at the top of the screen.</p>
-            )
+                        {
+                            !openAppID ? (
+                                <div className={styles.tasksWrapper}>
+                                    {/* <b>-</b> */}
+                                    <h3 className="m-show-block">Your tasks</h3>
+                                    <b className="m-hide">Track tasks for each application</b>
+                                    <TodoTasks setOpenAppID={setOpenAppID} />
+                                </div>
+                            ) : (
+                                <></>
+                            )
+                        }
+                    </div>
+
+                    {/* <div>
+                        <div className={styles.opportunityWrapper}>
+
+                        </div>
+                        <h5>Opportunities Tracker</h5>
+                        <div className={styles.applicationsWrapper} style={{ height: "calc(100vh - 300px)" }}>
+                            <OpportunitiesTracker />
+                        </div>
+                    </div> */}
+
+                </div>
+
+                {
+                    openAppID ? (
+                        <div className={styles.asidePage}>
+                            <ApplicationView counter={counter} setCounter={setCounter} openAppID={openAppID} setOpenAppID={setOpenAppID} />
+                        </div>
+                    ) : (
+                        <></>
+                    )
+                }
+
+            </main>
         ) : (
-            <div className={styles.noYearsWrapper}>
-
-                <h3>Your applications are grouped by 'years' that you create.</h3>
-                <p>Create one now to begin tracking you applications.</p>
-
-                <NewYears />
-
-            </div>
+            <p style={{ textAlign: "center", marginTop: "12%" }}>Please select an application group at the top of the screen.</p>
         )
-    ) : (
-        <AuthenticationWrapper />
     )
 }

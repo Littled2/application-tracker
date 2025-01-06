@@ -1,0 +1,11 @@
+.groups {
+    display: flex;
+}
+
+.groups button {
+    text-wrap: nowrap;
+}
+
+.selected {
+    background-color: var(--light-grey) !important;
+}

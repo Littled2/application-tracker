@@ -7,6 +7,13 @@
     border-bottom: 1.5px solid black;
 }
 
+.header button {
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 .years {
     display: flex;
     gap: 2px;
@@ -15,20 +22,14 @@
 }
 
 .years > button {
-    padding: 2px 4px;
-    font-size: 0.8rem;
+    /* font-size: 0.8rem; */
     background-color: transparent;
     color: whitesmoke;
+    padding: 6px;
 }
 
 .selected {
     background-color: var(--light-grey) !important;
-}
-
-.newBtn {
-    display: flex;
-    align-items: center;
-    gap: 4px;
 }
 
 .keyIndicators {
@@ -44,8 +45,40 @@
     background-color: rgba(100, 100, 100, 0.5);
 }
 
+.mobileGroupsSelect {
+    flex: 1;
+}
+
+.mobileGroupsSelect select {
+    background-color: transparent;
+    color: var(--text-white);
+    font-size: 1rem;
+    padding: 4px;
+}
+
+.mobileGroupsSelect option {
+    background-color: var(--dark-grey);
+    color: var(--text-white);
+}
+
+.mobileGroupsSelect option:checked {
+    background-color: var(--text-orange);
+}
+
 @media screen and (max-width: 800px) {
-    .header * {
-        font-size: 8px;
+    
+    .newAppButton {
+        --outerPadding: 6px;
+
+        position: fixed;
+        bottom: var(--outerPadding);
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100vw - var(--outerPadding));
+        display: flex;
+        justify-content: center;
+        font-weight: 600;
+        padding-top: 6px;
+        padding-bottom: 6px;
     }
 }

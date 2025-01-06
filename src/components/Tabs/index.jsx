@@ -19,6 +19,7 @@ export function Tabs({ tabs, saveActiveTabAs=null }) {
         localStorage.setItem(saveActiveTabAs, selected)
     }, [ selected ])
 
+
     return (
         <div>
             <div className={styles.tabs}>

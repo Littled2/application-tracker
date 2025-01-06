@@ -5,12 +5,15 @@ import { IdeasApplying } from "../../components/ApplicationsList/IdeaApplying";
 import { Tabs } from "../../components/Tabs";
 import { usePocket } from "../../contexts/pocketContext";
 import { useActiveYear } from "../../contexts/activeYearContext";
+import { useMasterCounter } from "../../contexts/masterCounterContext";
 
-export function ApplicationsTabs({ counter, setOpenAppID }) {
+export function ApplicationsTabs({ setOpenAppID, openAppID }) {
 
     const { pb } = usePocket()
 
     const { activeYear } = useActiveYear()
+
+    const { masterCounter } = useMasterCounter()
 
     const [ ideaApplying, setIdeaApplying ] = useState(0)
     const [ applied, setApplied ] = useState(0)
@@ -53,21 +56,21 @@ export function ApplicationsTabs({ counter, setOpenAppID }) {
             setAcceptedDeclined(accepted + declined)
         })
         .catch(err => console.error("Error getting total types by year", err))
-    }, [ activeYear, counter ])
+    }, [ activeYear, masterCounter ])
 
     return (
         <Tabs tabs={[
             {
                 name: `Idea / Applying ${ideaApplying ? `(${ideaApplying})` : ""}`,
-                tab: <IdeasApplying counter={counter} setOpenAppID={setOpenAppID} />
+                tab: <IdeasApplying openAppID={openAppID} setOpenAppID={setOpenAppID} />
             },
             {
                 name: `Applied ${applied ? `(${applied})` : ""}`,
-                tab: <Applied counter={counter} setOpenAppID={setOpenAppID} />
+                tab: <Applied openAppID={openAppID} setOpenAppID={setOpenAppID} />
             },
             {
                 name: `Accepted / Declined ${acceptedDeclined ? `(${acceptedDeclined})` : ""}`,
-                tab: <AcceptedDeclined counter={counter} setOpenAppID={setOpenAppID} />
+                tab: <AcceptedDeclined openAppID={openAppID} setOpenAppID={setOpenAppID} />
             }
         ]} />
     )

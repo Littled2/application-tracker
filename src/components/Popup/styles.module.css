@@ -6,7 +6,7 @@
     bottom: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 100;
+    z-index: 10000;
     display: flex;
     padding: 24px;
     justify-content: center;
@@ -16,7 +16,7 @@
 
 .popup {
     width: 600px;
-    max-width: 800px;
+    max-width: min(800px, 90vw);
     max-height: 60vh;
     max-height: 85vh;
     background-color: var(--bg-colour);
@@ -42,4 +42,27 @@
 .popup .content {
     padding: 0.75rem;
     overflow-y: auto;
+}
+
+@media screen and (max-width: 800px) {
+    .wrapper {
+        padding: 0;
+    }
+    .popup {
+        width: 100vw;
+        height: 100vh;
+        max-width: unset;
+        max-height: unset;
+    }
+    .popup .top {
+        font-size: 1.1rem;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+    .popup .top button {
+        aspect-ratio: 1;
+    }
+    .popup .content {
+        overflow-y: auto;
+    }
 }

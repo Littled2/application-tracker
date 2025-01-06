@@ -3,17 +3,20 @@ import { TableSection } from "../../TableSection"
 import styles from "./styles.module.css"
 import { usePocket } from "../../../contexts/pocketContext"
 import { getDate } from "../../../helpers/dates"
+import { useActiveYear } from "../../../contexts/activeYearContext"
 
 export function TodoTasks({ setOpenAppID }) {
 
     const [ todoTasks, setTodoTasks ] = useState([])
     const [ completeTasks, setCompleteTasks ] = useState([])
 
+    const { activeYear } = useActiveYear()
+
     const { pb } = usePocket()
 
     useEffect(() => {
 
-        pb.collection("tasks").getFullList({ sort: "deadline", filter: "complete = false" })
+        pb.collection("tasks").getFullList({ sort: "deadline", filter: `application.year = '${activeYear}' && complete = false` })
         .then(tasks => {
             setTodoTasks(tasks)
         })
@@ -21,7 +24,7 @@ export function TodoTasks({ setOpenAppID }) {
             console.error("Error getting TODO tasks", err)
         })
 
-        pb.collection("tasks").getFullList({ sort: "deadline", filter: "complete = true" })
+        pb.collection("tasks").getFullList({ sort: "deadline", filter: `application.year = '${activeYear}' && complete = true` })
         .then(tasks => {
             setCompleteTasks(tasks)
         })
@@ -29,7 +32,7 @@ export function TodoTasks({ setOpenAppID }) {
             console.error("Error getting complete tasks", err)
         })
 
-    }, [])
+    }, [activeYear])
 
     return (
         <>
@@ -51,7 +54,7 @@ export function TodoTasks({ setOpenAppID }) {
                                 return (
                                     <tr
                                         className="cursor-pointer"
-                                        key={task.taskID}
+                                        key={'_' + task.taskID}
                                         onClick={() => setOpenAppID(task.application)}
                                     >
                                         <td>{task?.info}</td>
@@ -70,7 +73,7 @@ export function TodoTasks({ setOpenAppID }) {
                                 return (
                                     <tr
                                         className="cursor-pointer"
-                                        key={task.taskID}
+                                        key={'__' + task.taskID}
                                         onClick={() => setOpenAppID(task.application)}
                                     >
                                         <td>{task?.info}</td>

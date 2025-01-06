@@ -1,0 +1,38 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-medium);
+}
+
+.key {
+    display: flex;
+    gap: var(--spacing-small);
+    justify-content: center;
+    align-items: center;
+}
+
+.late {
+    background-color: var(--late-bg);
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.almostLate {
+    background-color: var(--almost-late-bg);
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.statusInfo {
+    padding: 45px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-medium);
+    align-items: center;
+    justify-content: center;
+}
+
+.statusInfo button {
+    background-color: var(--dark-grey);
+    color: var(--text-white);
+}

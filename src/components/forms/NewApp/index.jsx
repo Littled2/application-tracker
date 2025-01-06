@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SelectOrganisation } from "../../inputs/SelectOrganisation";
 import styles from "./styles.module.css"
 import { usePocket } from "../../../contexts/pocketContext";
@@ -9,10 +9,13 @@ import { LocationsSelect } from "../../inputs/LocationsSelect";
 import { NewOrganisation } from "../NewOrganisation";
 import { Popup } from "../../Popup";
 import { NewLocation } from "../NewLocation";
+import { useMasterCounter } from "../../../contexts/masterCounterContext";
 
-export function NewApp({ setTrigger, setCounter }) {
+export function NewApp({ setTrigger }) {
+
+    const { setMasterCounter } = useMasterCounter()
+
     const [ orgID, setOrgID ] = useState('')
-
     const [ role, setRole ] = useState('')
     const [ link, setLink ] = useState('')
     const [ info, setInfo ] = useState('')
@@ -35,8 +38,6 @@ export function NewApp({ setTrigger, setCounter }) {
     function submit(e) {
         e.preventDefault()
 
-        console.log({locations})
-
         const data = {
             "role": role,
             "info": info,
@@ -53,8 +54,8 @@ export function NewApp({ setTrigger, setCounter }) {
 
         pb.collection('applications').create(data)
         .then(res => {
-            setCounter(c => c + 1)
             setTrigger(false)
+            setMasterCounter(prev => prev + 1)
         })
         .catch(err => {
             console.error("Error updating application", err)
@@ -65,6 +66,10 @@ export function NewApp({ setTrigger, setCounter }) {
         setStage(e.target.value)
     }
 
+    const nameInput = useRef()
+
+    useEffect(() => nameInput.current.focus(), [])
+
     return (
         <>
             <form className="form flex col gap-s" onSubmit={submit}>
@@ -72,14 +77,14 @@ export function NewApp({ setTrigger, setCounter }) {
                     <div>
                         <label>Name</label>
                     </div>
-                    <input type="text" required value={role} onInput={e => setRole(e.target.value)}/>
+                    <input ref={nameInput} type="text" required value={role} onInput={e => setRole(e.target.value)}/>
                 </div>
                 <div>
                     <div style={{ display:"flex", justifyContent:"space-between" }}>
                         <label>Organisation</label>
                         <small className="underline cursor-pointer" onClick={() => setNewOrgOpen(true)}>
                             <BiPlus />
-                            <span>New Organisation</span>
+                            <span>Add Organisation</span>
                         </small>
                     </div>
                     <SelectOrganisation required selected={orgID} setSelected={setOrgID} c={c} />
@@ -111,6 +116,7 @@ export function NewApp({ setTrigger, setCounter }) {
                         <select value={deadlineType} onInput={e => setDeadlineType(e.target.value)}>
                             <option value="rolling">Rolling</option>
                             <option value="fixed">Fixed</option>
+                            <option value="none">None</option>
                         </select>
                     </div>
                     <div>

@@ -3,6 +3,7 @@ import styles from "./styles.module.css"
 import ukImage from "./UK.png"
 import { usePocket } from "../../contexts/pocketContext";
 import { useActiveYear } from "../../contexts/activeYearContext";
+import { useMasterCounter } from "../../contexts/masterCounterContext";
 
 
 
@@ -15,6 +16,7 @@ export function LocationView() {
     const { pb } = usePocket()
 
     const { activeYear } = useActiveYear()
+    const { masterCounter } = useMasterCounter()
 
     const [ hover, setHover ] = useState(null)
 
@@ -51,7 +53,7 @@ export function LocationView() {
         })
         .catch(error => console.error("Error getting locations", error))
 
-    }, [ activeYear ])
+    }, [ activeYear, masterCounter ])
 
 
     function mouseOver(loc) {
@@ -65,46 +67,52 @@ export function LocationView() {
     return (
         <div className={styles.wrapper}>
             <div>
-                <b>Locations</b>
-                <table style={{ fontSize: "0.8rem" }} ref={table}>
-                    <tbody>
+                <b>View where you are applying</b>
+            </div>
+            <div className={styles.innerWrapper}>
+                <div className={styles.inner}>
+                    <div className={styles.list}>
+                        <table style={{ fontSize: "0.8rem" }} ref={table}>
+                            <tbody>
+                                {
+                                    Object.keys(appLocations).map((locID, i) => {
+                                        return (
+                                            <tr onMouseEnter={() => mouseOver(locID)} onMouseLeave={() => mouseAway(locID)} key={locID + i}>
+                                                <th className={hover !== null ? ((hover === locID) ? 'text-orange' : 'text-white') : 'text-white'}>{appLocations[locID].freq}</th>
+                                                <td>{appLocations[locID].name}</td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div className={styles.imageWrapper}>
+                    <div className={styles.dotsWrapper}>
                         {
                             Object.keys(appLocations).map((locID, i) => {
+
+                                const loc = appLocations[locID]
+
+                                if(hover !== null && hover !== locID) return
+                                
+                                let sizePX = (loc.freq * 2) + 2
+
                                 return (
-                                    <tr onMouseEnter={() => mouseOver(locID)} onMouseLeave={() => mouseAway(locID)} key={locID + i}>
-                                        <th className={hover !== null ? ((hover === locID) ? 'text-orange' : 'text-white') : 'text-white'}>{appLocations[locID].freq}</th>
-                                        <td>{appLocations[locID].name}</td>
-                                    </tr>
+                                    <div key={i} className={styles.dot} style={{
+                                        width: `${sizePX}px`,
+                                        height: `${sizePX}px`,
+                                        left: `${loc.distX}%`,
+                                        top: `${loc.distY}%`,
+                                        transform: `translateY(calc(-${sizePX}px / 2)) translateX(calc(-${sizePX}px / 2))`
+                                    }}></div>
                                 )
                             })
                         }
-                    </tbody>
-                </table>
-            </div>
-            <div className={styles.imageWrapper}>
-                <div className={styles.dotsWrapper}>
-                    {
-                        Object.keys(appLocations).map((locID, i) => {
-
-                            const loc = appLocations[locID]
-
-                            if(hover !== null && hover !== locID) return
-                            
-                            let sizePX = (loc.freq * 2) + 2
-
-                            return (
-                                <div key={i} className={styles.dot} style={{
-                                    width: `${sizePX}px`,
-                                    height: `${sizePX}px`,
-                                    left: `${loc.distX}%`,
-                                    top: `${loc.distY}%`,
-                                    transform: `translateY(calc(-${sizePX}px / 2)) translateX(calc(-${sizePX}px / 2))`
-                                }}></div>
-                            )
-                        })
-                    }
+                    </div>
+                    <img className={styles.image} src={ukImage} />
                 </div>
-                <img className={styles.image} src={ukImage} />
             </div>
         </div>
     )
